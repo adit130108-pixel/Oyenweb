@@ -1,0 +1,1395 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CYBERZIP · OYEN</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Poppins', system-ui, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #0b0d1a;
+            background-size: cover;
+            background-position: center;
+            padding: 20px;
+        }
+
+        .neon-container {
+            max-width: 1100px;
+            width: 100%;
+            background: rgba(10, 14, 30, 0.65);
+            backdrop-filter: blur(8px) saturate(180%);
+            -webkit-backdrop-filter: blur(8px) saturate(180%);
+            border: 2px solid #00e5ff;
+            box-shadow: 0 0 30px #00e5ff55, 0 0 60px #0088ff33, inset 0 0 20px #00e5ff33;
+            border-radius: 42px;
+            padding: 30px 25px 40px;
+            transition: all 0.2s ease;
+            color: #e0f2fe;
+        }
+
+        .cyber-title {
+            text-align: center;
+            font-size: 2.4rem;
+            font-weight: 700;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            text-shadow: 0 0 12px #00e5ff, 0 0 30px #0066ff;
+            color: #b3f0ff;
+            margin-bottom: 10px;
+            word-break: break-word;
+        }
+        .cyber-title i {
+            margin: 0 10px;
+            color: #00f0ff;
+        }
+
+        .creator-credit {
+            text-align: center;
+            font-size: 1rem;
+            color: #9bcbff;
+            background: #0a1a2f80;
+            padding: 8px 18px;
+            border-radius: 60px;
+            display: inline-block;
+            margin: 0 auto 25px;
+            border: 1px solid #00a6ff;
+            backdrop-filter: blur(2px);
+            letter-spacing: 1px;
+        }
+
+        .step-box {
+            background: #0b132bcc;
+            border-radius: 28px;
+            padding: 22px 20px;
+            margin: 20px 0 25px;
+            border-left: 6px solid #00e5ff;
+            box-shadow: 0 0 20px #00a6ff33;
+            backdrop-filter: blur(4px);
+            transition: all 0.3s ease;
+        }
+        .step-box.locked {
+            opacity: 0.5;
+            border-left-color: #ff4444;
+        }
+        .step-box.unlocked {
+            border-left-color: #00ffb3;
+        }
+
+        .step-label {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #b3f0ff;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+        .step-label i {
+            font-size: 2rem;
+            color: #00f0ff;
+            filter: drop-shadow(0 0 8px cyan);
+        }
+
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 10px 0 12px;
+        }
+
+        .btn-tiktok {
+            background: #1a1f35;
+            border: 2px solid #00e5ff;
+            color: white;
+            padding: 12px 28px;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 14px;
+            box-shadow: 0 0 20px #00a6ff44;
+            flex: 1;
+            min-width: 180px;
+            justify-content: center;
+        }
+        .btn-tiktok i {
+            font-size: 1.8rem;
+        }
+        .btn-tiktok i.fa-brands.fa-tiktok {
+            color: #ff0050;
+        }
+        .btn-tiktok i.fa-solid.fa-heart {
+            color: #ff2d55;
+        }
+        .btn-tiktok:hover:not(:disabled) {
+            background: #00e5ff22;
+            box-shadow: 0 0 40px #00a6ffaa;
+            transform: scale(1.02);
+        }
+        .btn-tiktok:active:not(:disabled) {
+            transform: scale(0.97);
+        }
+        .btn-tiktok:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .btn-tiktok.done {
+            border-color: #00ffb3;
+            background: #003322;
+            color: #aaffdd;
+        }
+        .btn-tiktok.done i {
+            color: #00ffb3 !important;
+        }
+        .btn-tiktok.hidden-btn {
+            display: none !important;
+        }
+
+        .btn-tiktok-link {
+            background: #1a1f35;
+            border: 2px solid #ff0050;
+            color: white;
+            padding: 12px 28px;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 14px;
+            box-shadow: 0 0 20px #ff005044;
+            flex: 1;
+            min-width: 180px;
+            justify-content: center;
+            text-decoration: none;
+        }
+        .btn-tiktok-link i {
+            font-size: 1.8rem;
+            color: #ff0050;
+        }
+        .btn-tiktok-link:hover {
+            background: #ff005022;
+            box-shadow: 0 0 40px #ff0050aa;
+            transform: scale(1.02);
+        }
+        .btn-tiktok-link:active {
+            transform: scale(0.97);
+        }
+        .btn-tiktok-link.done {
+            border-color: #00ffb3;
+            background: #003322;
+            opacity: 0.5;
+            cursor: default;
+            pointer-events: none;
+        }
+        .btn-tiktok-link.done i {
+            color: #00ffb3 !important;
+        }
+
+        .status-badge {
+            display: inline-block;
+            background: #0b1a2f;
+            padding: 6px 18px;
+            border-radius: 40px;
+            border: 1px solid #ffb3c6;
+            color: #ffb3c6;
+            font-size: 0.9rem;
+            margin-left: 16px;
+        }
+        .status-badge.done {
+            border-color: #00ffb3;
+            color: #aaffdd;
+            background: #003322;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="url"] {
+            background: #0d1a2b;
+            border: 2px solid #2a5f7a;
+            border-radius: 60px;
+            padding: 14px 24px;
+            font-size: 1.1rem;
+            width: 100%;
+            max-width: 380px;
+            color: #e0f0ff;
+            outline: none;
+            transition: 0.2s;
+            font-weight: 500;
+        }
+        input[type="text"]:focus,
+        input[type="password"]:focus,
+        input[type="url"]:focus {
+            border-color: #00e5ff;
+            box-shadow: 0 0 30px #00a6ff88;
+            background: #0b1a2f;
+        }
+        input[type="text"]::placeholder,
+        input[type="password"]::placeholder,
+        input[type="url"]::placeholder {
+            color: #6a8faa;
+        }
+        input[type="text"]:disabled,
+        input[type="password"]:disabled,
+        input[type="url"]:disabled {
+            opacity: 0.5;
+        }
+
+        .name-section {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 18px;
+            margin-top: 12px;
+        }
+
+        .btn-submit-name {
+            background: #00c8ff;
+            border: none;
+            padding: 12px 32px;
+            border-radius: 60px;
+            font-weight: 700;
+            color: #0b0d1a;
+            font-size: 1.1rem;
+            cursor: pointer;
+            box-shadow: 0 0 30px #00a6ffaa;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .btn-submit-name:hover:not(:disabled) {
+            background: #00e5ff;
+            box-shadow: 0 0 50px #00e5ffdd;
+            transform: scale(1.02);
+        }
+        .btn-submit-name:active:not(:disabled) {
+            transform: scale(0.96);
+        }
+        .btn-submit-name:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .zip-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 18px;
+            margin: 30px 0 20px;
+        }
+
+        .zip-card {
+            background: #0d1a2bcc;
+            backdrop-filter: blur(4px);
+            border-radius: 30px;
+            padding: 16px 10px;
+            text-align: center;
+            border: 1.5px solid #00b7ff;
+            box-shadow: 0 0 15px #0080ff44;
+            transition: all 0.2s ease;
+            color: #d4edff;
+            font-weight: 500;
+        }
+        .zip-card i {
+            font-size: 2.4rem;
+            color: #00e5ff;
+            filter: drop-shadow(0 0 10px #00a6ff);
+            margin-bottom: 6px;
+        }
+        .zip-card .zip-name {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #b3f0ff;
+            margin: 4px 0 8px;
+            min-height: 24px;
+            word-break: break-word;
+        }
+        .zip-card a {
+            display: block;
+            margin-top: 8px;
+            background: #00a6ff33;
+            padding: 10px 5px;
+            border-radius: 40px;
+            color: #b3f0ff;
+            text-decoration: none;
+            font-weight: 600;
+            border: 1px solid #00b3ff;
+            transition: 0.2s;
+            font-size: 0.9rem;
+            word-break: break-all;
+        }
+        .zip-card a:hover:not(.disabled-link) {
+            background: #00a6ffaa;
+            color: #0b0d1a;
+            box-shadow: 0 0 30px #00e5ff;
+        }
+        .zip-card.disabled {
+            opacity: 0.4;
+            filter: grayscale(0.6);
+            pointer-events: none;
+        }
+        .zip-card.disabled a {
+            background: #2a3f55;
+            border-color: #3a5f7a;
+            color: #7a9bb0;
+        }
+        .zip-card a.disabled-link {
+            cursor: not-allowed;
+        }
+
+        .footer-oyen {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 1.05rem;
+            letter-spacing: 2px;
+            border-top: 1px solid #00a6ff55;
+            padding-top: 25px;
+            color: #9ac7ff;
+            text-shadow: 0 0 10px #0055ff44;
+        }
+        .footer-oyen strong {
+            color: #b3f0ff;
+            font-weight: 700;
+        }
+
+        .footer-oyen .neon-tag {
+            display: inline-block;
+            margin-left: 6px;
+            background: #0a1a2f;
+            padding: 0 14px;
+            border-radius: 40px;
+            border: 1px solid #00a6ff;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .info-message {
+            background: #0d1a2b;
+            border-left: 6px solid #ff79c6;
+            padding: 10px 18px;
+            border-radius: 30px;
+            margin: 10px 0 0;
+            color: #ffb3d9;
+        }
+        .info-message.success {
+            border-left-color: #00ffb3;
+            color: #aaffdd;
+        }
+        .info-message.error {
+            border-left-color: #ff4444;
+            color: #ffb3b3;
+        }
+        .info-message.warning {
+            border-left-color: #ffd700;
+            color: #ffd700;
+        }
+
+        /* Admin Panel */
+        .admin-panel {
+            background: #0a1a2f80;
+            border: 2px solid #ffd70055;
+            border-radius: 20px;
+            padding: 18px 20px;
+            margin: 15px 0 20px;
+            position: relative;
+        }
+        .admin-panel .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+        .admin-panel h4 {
+            color: #ffd700;
+            font-weight: 400;
+            font-size: 0.95rem;
+            letter-spacing: 1px;
+        }
+        .admin-panel h4 i {
+            color: #ffd700;
+            margin-right: 8px;
+        }
+        .admin-panel .admin-lock {
+            font-size: 0.8rem;
+            color: #8fcbff;
+        }
+        .admin-panel .admin-lock i {
+            color: #ffd700;
+        }
+        .admin-panel .login-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+            margin: 8px 0;
+        }
+        .admin-panel .login-section input {
+            max-width: 250px;
+            padding: 10px 18px;
+            font-size: 0.95rem;
+            flex: 1;
+            min-width: 150px;
+        }
+        .admin-panel .login-section .btn-login {
+            background: #ffd70033;
+            border: 1px solid #ffd700;
+            color: #ffd700;
+            padding: 10px 24px;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: 0.2s;
+            font-weight: 600;
+        }
+        .admin-panel .login-section .btn-login:hover {
+            background: #ffd700aa;
+            color: #0b0d1a;
+            box-shadow: 0 0 30px #ffd700;
+        }
+        .admin-panel .login-section .btn-logout {
+            background: #ff444433;
+            border: 1px solid #ff4444;
+            color: #ffb3b3;
+            padding: 10px 24px;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: 0.2s;
+            font-weight: 600;
+        }
+        .admin-panel .login-section .btn-logout:hover {
+            background: #ff4444aa;
+            color: #fff;
+        }
+
+        .admin-panel .zip-item-list {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin-top: 10px;
+            max-height: 500px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+        .admin-panel .zip-item-list::-webkit-scrollbar {
+            width: 6px;
+        }
+        .admin-panel .zip-item-list::-webkit-scrollbar-track {
+            background: #0d1a2b;
+            border-radius: 10px;
+        }
+        .admin-panel .zip-item-list::-webkit-scrollbar-thumb {
+            background: #00a6ff55;
+            border-radius: 10px;
+        }
+
+        .admin-panel .zip-item {
+            background: #0d1a2b;
+            border-radius: 16px;
+            padding: 12px 16px;
+            border: 1px solid #2a5f7a;
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 10px;
+            align-items: center;
+        }
+        .admin-panel .zip-item .zip-label {
+            font-size: 0.8rem;
+            color: #6a8faa;
+            font-weight: 600;
+            min-width: 60px;
+        }
+        .admin-panel .zip-item .zip-fields {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            flex: 1;
+        }
+        .admin-panel .zip-item .zip-fields input {
+            padding: 8px 14px;
+            font-size: 0.85rem;
+            max-width: 100%;
+            border-radius: 30px;
+        }
+        .admin-panel .zip-item .zip-fields .field-label {
+            font-size: 0.7rem;
+            color: #4a6f8a;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .admin-panel .zip-item .zip-fields .field-label i {
+            font-size: 0.7rem;
+        }
+        .admin-panel .zip-item .btn-save-zip {
+            background: #00a6ff44;
+            border: 1px solid #00e5ff;
+            color: #b3f0ff;
+            padding: 8px 16px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: 0.2s;
+            white-space: nowrap;
+            align-self: center;
+        }
+        .admin-panel .zip-item .btn-save-zip:hover {
+            background: #00a6ffaa;
+            color: #0b0d1a;
+            box-shadow: 0 0 20px #00e5ff;
+        }
+
+        .admin-panel .btn-reset-all {
+            background: #ff6b6b33;
+            border: 1px solid #ff6b6b;
+            color: #ffb3b3;
+            padding: 8px 24px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            margin-top: 12px;
+            transition: 0.2s;
+            font-weight: 600;
+        }
+        .admin-panel .btn-reset-all:hover {
+            background: #ff6b6b55;
+            border-color: #ff4444;
+        }
+        .admin-panel .admin-locked-overlay {
+            color: #6a8faa;
+            font-style: italic;
+            font-size: 0.9rem;
+            padding: 8px 0;
+        }
+
+        .admin-panel .admin-badge {
+            display: inline-block;
+            background: #ffd70022;
+            border: 1px solid #ffd700;
+            color: #ffd700;
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            margin-left: 10px;
+        }
+
+        .link-setting {
+            background: #0a1a2f80;
+            border: 1px solid #00a6ff55;
+            border-radius: 16px;
+            padding: 15px 18px;
+            margin: 10px 0;
+        }
+        .link-setting label {
+            color: #8fcbff;
+            font-size: 0.85rem;
+            display: block;
+            margin-bottom: 4px;
+        }
+        .link-setting input {
+            background: #0d1a2b;
+            border: 2px solid #2a5f7a;
+            border-radius: 40px;
+            padding: 10px 18px;
+            font-size: 0.9rem;
+            width: 100%;
+            color: #e0f0ff;
+            outline: none;
+            transition: 0.2s;
+        }
+        .link-setting input:focus {
+            border-color: #00e5ff;
+            box-shadow: 0 0 20px #00a6ff55;
+        }
+        .link-setting .btn-save-link {
+            background: #00a6ff44;
+            border: 1px solid #00e5ff;
+            color: #b3f0ff;
+            padding: 8px 20px;
+            border-radius: 40px;
+            cursor: pointer;
+            margin-top: 8px;
+            transition: 0.2s;
+            font-weight: 600;
+        }
+        .link-setting .btn-save-link:hover {
+            background: #00a6ffaa;
+            color: #0b0d1a;
+            box-shadow: 0 0 30px #00e5ff;
+        }
+
+        .progress-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 8px 0;
+        }
+        .progress-step {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+            color: #6a8faa;
+        }
+        .progress-step.active {
+            color: #b3f0ff;
+        }
+        .progress-step.done {
+            color: #00ffb3;
+        }
+        .progress-line {
+            flex: 1;
+            height: 2px;
+            background: #2a5f7a;
+            min-width: 30px;
+        }
+        .progress-line.done {
+            background: #00ffb3;
+        }
+
+        /* Live update indicator */
+        .live-update {
+            display: inline-block;
+            background: #00ffb322;
+            border: 1px solid #00ffb3;
+            color: #00ffb3;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            margin-left: 8px;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .permanent-badge {
+            display: inline-block;
+            background: #ff6b6b22;
+            border: 1px solid #ff6b6b;
+            color: #ff6b6b;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 0.65rem;
+            margin-left: 6px;
+        }
+
+        @media (max-width: 600px) {
+            .neon-container { padding: 20px 15px; }
+            .cyber-title { font-size: 1.8rem; }
+            .step-label { font-size: 1.1rem; }
+            .btn-tiktok { min-width: 140px; padding: 10px 18px; font-size: 0.95rem; }
+            .admin-panel .zip-item { grid-template-columns: 1fr; }
+            .admin-panel .zip-item .btn-save-zip { align-self: stretch; }
+            .admin-panel .login-section { flex-direction: column; align-items: stretch; }
+            .admin-panel .login-section input { max-width: 100%; }
+            .progress-container { flex-wrap: wrap; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="neon-container" id="appContainer">
+    <div class="cyber-title">
+        <i class="fas fa-file-archive"></i> ZIP·LINK <i class="fas fa-bolt"></i>
+    </div>
+
+    <div style="text-align: center;">
+        <span class="creator-credit">OYEN</span>
+    </div>
+
+    <!-- ADMIN PANEL -->
+    <div class="admin-panel" id="adminPanel">
+        <div class="admin-header">
+            <h4><i class="fas fa-crown"></i> Panel Admin <span class="admin-badge">hanya pembuat web</span></h4>
+            <span class="admin-lock" id="adminLockStatus"><i class="fas fa-lock"></i> Terkunci</span>
+        </div>
+        
+        <div class="login-section" id="loginSection">
+            <input type="password" id="adminPassword" placeholder="Masukkan password admin..." maxlength="30">
+            <button class="btn-login" id="btnAdminLogin"><i class="fas fa-unlock"></i> Buka Panel</button>
+            <button class="btn-logout hidden" id="btnAdminLogout"><i class="fas fa-sign-out-alt"></i> Logout</button>
+        </div>
+
+        <div id="adminMessage" class="info-message hidden" style="margin-top:10px;"></div>
+
+        <div id="adminContent" class="hidden">
+            <!-- Setting Link Follow & Video -->
+            <div class="link-setting">
+                <label>
+                    <i class="fab fa-tiktok"></i> Link Follow Akun TikTok 
+                    <span class="live-update">LIVE</span>
+                    <span class="permanent-badge">PERMANEN</span>
+                </label>
+                <input type="url" id="followLinkInput" placeholder="https://www.tiktok.com/@username" value="https://www.tiktok.com/@oyen_creator">
+                <button class="btn-save-link" id="btnSaveFollowLink"><i class="fas fa-save"></i> Simpan & Update</button>
+            </div>
+
+            <div class="link-setting">
+                <label>
+                    <i class="fas fa-video"></i> Link Video Terbaru 
+                    <span class="live-update">LIVE</span>
+                    <span class="permanent-badge">PERMANEN</span>
+                </label>
+                <input type="url" id="videoLinkInput" placeholder="https://www.tiktok.com/@username/video/xxxxx" value="https://www.tiktok.com/@oyen_creator/video/123456789">
+                <button class="btn-save-link" id="btnSaveVideoLink"><i class="fas fa-save"></i> Simpan & Update</button>
+            </div>
+
+            <hr style="border-color: #00a6ff33; margin: 15px 0;">
+
+            <h4 style="color:#ffd700; font-weight:400; font-size:0.95rem; margin-bottom:10px;">
+                <i class="fas fa-pen"></i> Ubah Nama & Link 15 File ZIP 
+                <span class="live-update">LIVE</span>
+                <span class="permanent-badge">PERMANEN</span>
+            </h4>
+            <p style="color:#6a8faa; font-size:0.8rem; margin-bottom:10px;">
+                <i class="fas fa-info-circle"></i> Ubah nama dan link download setiap file ZIP - perubahan langsung terlihat dan bersifat permanen
+            </p>
+            <div class="zip-item-list" id="zipItemList"></div>
+            <button class="btn-reset-all" id="btnResetAll"><i class="fas fa-undo"></i> Reset Semua ke Default</button>
+            <p style="color:#ff6b6b; font-size:0.7rem; margin-top:6px;">
+                <i class="fas fa-exclamation-triangle"></i> Reset akan mengembalikan semua ke default (ZIP 01 - ZIP 15)
+            </p>
+        </div>
+
+        <div id="adminLockedContent" class="admin-locked-overlay">
+            <i class="fas fa-lock"></i> Panel admin terkunci. Masukkan password untuk mengubah link & nama ZIP.
+        </div>
+    </div>
+
+    <!-- STEP 1 : FOLLOW + LIKE -->
+    <div class="step-box" id="stepFollow">
+        <div class="step-label">
+            <i class="fab fa-tiktok"></i> 
+            <span>WAJIB FOLLOW & LIKE</span>
+            <span class="status-badge" id="followStatus">⏳ 0/2</span>
+        </div>
+        <p style="margin: 8px 0 14px; color: #b0d4ff;">
+            <i class="fas fa-exclamation-circle"></i> <strong style="color: #ff6b6b;">WAJIB</strong> follow akun dan like video terbaru pembuat web
+        </p>
+        
+        <div class="progress-container">
+            <span class="progress-step" id="stepFollowLabel"><i class="fas fa-user-plus"></i> Follow</span>
+            <span class="progress-line" id="line1"></span>
+            <span class="progress-step" id="stepLikeLabel"><i class="fas fa-heart"></i> Like</span>
+            <span class="progress-line" id="line2"></span>
+            <span class="progress-step" id="stepNameLabel"><i class="fas fa-user"></i> Nama</span>
+        </div>
+
+        <div class="btn-group">
+            <a class="btn-tiktok-link" id="followLinkBtn" href="https://www.tiktok.com/@oyen_creator" target="_blank">
+                <i class="fa-brands fa-tiktok"></i> Buka Akun & Follow
+            </a>
+            <a class="btn-tiktok-link" id="videoLinkBtn" href="https://www.tiktok.com/@oyen_creator/video/123456789" target="_blank">
+                <i class="fa-solid fa-video"></i> Buka Video & Like
+            </a>
+        </div>
+
+        <div style="display: flex; flex-wrap: wrap; gap: 15px; margin: 15px 0 10px;">
+            <button class="btn-tiktok hidden-btn" id="btnFollow">
+                <i class="fa-solid fa-check-circle"></i> Saya Sudah Follow
+                <span id="followCheck" style="font-size:0.8rem; margin-left:4px;"></span>
+            </button>
+            <button class="btn-tiktok hidden-btn" id="btnLike">
+                <i class="fa-solid fa-check-circle"></i> Saya Sudah Like
+                <span id="likeCheck" style="font-size:0.8rem; margin-left:4px;"></span>
+            </button>
+        </div>
+
+        <div id="followMessage" class="info-message hidden"></div>
+    </div>
+
+    <!-- STEP 2 : MASUKAN NAMA -->
+    <div class="step-box locked" id="stepName">
+        <div class="step-label">
+            <i class="fas fa-user-astronaut"></i> 
+            <span>Masukkan Nama Kamu</span>
+            <span class="status-badge" id="nameStatus">🔒 terkunci</span>
+        </div>
+        <p style="margin: 8px 0 14px; color: #ff6b6b;" id="nameLockMessage">
+            <i class="fas fa-lock"></i> Selesaikan FOLLOW & LIKE dulu untuk membuka form ini!
+        </p>
+        <div class="name-section">
+            <input type="text" id="inputName" placeholder="Nama kamu ..." maxlength="40" disabled>
+            <button class="btn-submit-name" id="btnSubmitName" disabled>
+                <i class="fas fa-lock"></i> Terkunci
+            </button>
+        </div>
+        <div id="nameMessage" class="info-message hidden"></div>
+    </div>
+
+    <!-- 15 LINK ZIP -->
+    <div id="zipGridContainer">
+        <div style="display: flex; justify-content: space-between; align-items: baseline; margin: 15px 0 8px; flex-wrap: wrap; gap: 8px;">
+            <span style="font-weight: 300; color: #8fcbff;">
+                <i class="fas fa-link"></i> 15 file ZIP 
+                <span class="live-update" style="font-size:0.7rem;">LIVE</span>
+            </span>
+            <span style="font-size: 0.8rem; background: #0b1a2f; padding: 4px 14px; border-radius: 40px; border: 1px solid #00a6ff55;" id="zipStatusLabel">
+                <i class="fas fa-lock"></i> terkunci
+            </span>
+        </div>
+        <div class="zip-grid" id="zipGrid"></div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer-oyen">
+        website ini di buat dengan sepenuh hati oleh 
+        <strong>OYEN</strong>
+        <span class="neon-tag">
+            <i class="fas fa-robot"></i> @meong_13d
+        </span>
+    </div>
+</div>
+
+<script>
+    (function() {
+        // ---------- KONFIGURASI ----------
+        const ADMIN_PASSWORD = "10112007";
+        
+        const DEFAULT_NAMES = [
+            "ZIP 01", "ZIP 02", "ZIP 03", "ZIP 04", "ZIP 05",
+            "ZIP 06", "ZIP 07", "ZIP 08", "ZIP 09", "ZIP 10",
+            "ZIP 11", "ZIP 12", "ZIP 13", "ZIP 14", "ZIP 15"
+        ];
+
+        const DEFAULT_LINKS = [
+            "https://example.com/file1.zip",
+            "https://example.com/file2.zip",
+            "https://example.com/file3.zip",
+            "https://example.com/file4.zip",
+            "https://example.com/file5.zip",
+            "https://example.com/file6.zip",
+            "https://example.com/file7.zip",
+            "https://example.com/file8.zip",
+            "https://example.com/file9.zip",
+            "https://example.com/file10.zip",
+            "https://example.com/file11.zip",
+            "https://example.com/file12.zip",
+            "https://example.com/file13.zip",
+            "https://example.com/file14.zip",
+            "https://example.com/file15.zip"
+        ];
+
+        // Data utama - semua perubahan disimpan di sini
+        let zipNames = [...DEFAULT_NAMES];
+        let zipLinks = [...DEFAULT_LINKS];
+        let followLink = "https://www.tiktok.com/@oyen_creator";
+        let videoLink = "https://www.tiktok.com/@oyen_creator/video/123456789";
+
+        // ---------- ELEMEN ----------
+        const container = document.getElementById('appContainer');
+        const stepFollow = document.getElementById('stepFollow');
+        const stepName = document.getElementById('stepName');
+        const followStatus = document.getElementById('followStatus');
+        const btnFollow = document.getElementById('btnFollow');
+        const btnLike = document.getElementById('btnLike');
+        const followCheck = document.getElementById('followCheck');
+        const likeCheck = document.getElementById('likeCheck');
+        const followMsg = document.getElementById('followMessage');
+        const nameInput = document.getElementById('inputName');
+        const btnName = document.getElementById('btnSubmitName');
+        const nameStatus = document.getElementById('nameStatus');
+        const nameMsg = document.getElementById('nameMessage');
+        const nameLockMessage = document.getElementById('nameLockMessage');
+        const zipGrid = document.getElementById('zipGrid');
+        const zipStatusLabel = document.getElementById('zipStatusLabel');
+        const zipItemList = document.getElementById('zipItemList');
+        const adminMessage = document.getElementById('adminMessage');
+        const btnResetAll = document.getElementById('btnResetAll');
+        const followLinkBtn = document.getElementById('followLinkBtn');
+        const videoLinkBtn = document.getElementById('videoLinkBtn');
+        const followLinkInput = document.getElementById('followLinkInput');
+        const videoLinkInput = document.getElementById('videoLinkInput');
+        const btnSaveFollowLink = document.getElementById('btnSaveFollowLink');
+        const btnSaveVideoLink = document.getElementById('btnSaveVideoLink');
+        const adminPassword = document.getElementById('adminPassword');
+        const btnAdminLogin = document.getElementById('btnAdminLogin');
+        const btnAdminLogout = document.getElementById('btnAdminLogout');
+        const adminContent = document.getElementById('adminContent');
+        const adminLockedContent = document.getElementById('adminLockedContent');
+        const adminLockStatus = document.getElementById('adminLockStatus');
+        const stepFollowLabel = document.getElementById('stepFollowLabel');
+        const stepLikeLabel = document.getElementById('stepLikeLabel');
+        const stepNameLabel = document.getElementById('stepNameLabel');
+        const line1 = document.getElementById('line1');
+        const line2 = document.getElementById('line2');
+
+        // ---------- STATE ----------
+        let isFollowed = false;
+        let isLiked = false;
+        let isNameSubmitted = false;
+        let userName = '';
+        let isAdminLoggedIn = false;
+        let isFollowLinkClicked = false;
+        let isVideoLinkClicked = false;
+
+        // ---------- SAVE DATA (PERMANEN) ----------
+        function saveData() {
+            // Data disimpan di variabel global - bersifat permanen sampai direset
+            // Tidak ada tombol "kembali ke sebelumnya" kecuali reset manual
+            console.log('💾 Data disimpan permanen:');
+            console.log('📁 ZIP Names:', zipNames);
+            console.log('🔗 ZIP Links:', zipLinks);
+            console.log('📱 Follow Link:', followLink);
+            console.log('🎬 Video Link:', videoLink);
+        }
+
+        // ---------- UPDATE ALL (FULL REFRESH) ----------
+        function updateAll() {
+            followLinkBtn.href = followLink;
+            videoLinkBtn.href = videoLink;
+            followLinkInput.value = followLink;
+            videoLinkInput.value = videoLink;
+            
+            const locked = document.querySelector('.zip-card.disabled') !== null;
+            renderZipLinks(locked);
+            renderAdminPanel();
+            saveData();
+        }
+
+        // ---------- UPDATE LINK TOMBOL ----------
+        function updateLinkButtons() {
+            followLinkBtn.href = followLink;
+            videoLinkBtn.href = videoLink;
+            followLinkInput.value = followLink;
+            videoLinkInput.value = videoLink;
+        }
+
+        // ---------- RENDER ADMIN PANEL (ZIP ITEMS) ----------
+        function renderAdminPanel() {
+            zipItemList.innerHTML = '';
+            zipNames.forEach((name, index) => {
+                const div = document.createElement('div');
+                div.className = 'zip-item';
+                const num = (index + 1).toString().padStart(2, '0');
+                div.innerHTML = `
+                    <span class="zip-label">ZIP ${num}</span>
+                    <div class="zip-fields">
+                        <div>
+                            <div class="field-label"><i class="fas fa-tag"></i> Nama File</div>
+                            <input type="text" id="nameInput_${index}" value="${name}" placeholder="Nama ZIP ${num}" maxlength="50">
+                        </div>
+                        <div>
+                            <div class="field-label"><i class="fas fa-link"></i> Link Download</div>
+                            <input type="url" id="linkInput_${index}" value="${zipLinks[index]}" placeholder="https://example.com/file.zip">
+                        </div>
+                    </div>
+                    <button class="btn-save-zip" data-index="${index}"><i class="fas fa-save"></i> Simpan</button>
+                `;
+                zipItemList.appendChild(div);
+            });
+
+            document.querySelectorAll('.btn-save-zip').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const index = parseInt(this.dataset.index);
+                    const nameInput = document.getElementById(`nameInput_${index}`);
+                    const linkInput = document.getElementById(`linkInput_${index}`);
+                    const newName = nameInput.value.trim();
+                    const newLink = linkInput.value.trim();
+
+                    if (newName === '') {
+                        showAdminMessage('Nama tidak boleh kosong!', 'error');
+                        return;
+                    }
+                    if (newLink === '') {
+                        showAdminMessage('Link tidak boleh kosong!', 'error');
+                        return;
+                    }
+
+                    // UPDATE DATA - PERMANEN
+                    zipNames[index] = newName;
+                    zipLinks[index] = newLink;
+
+                    // UPDATE SEMUA LANGSUNG
+                    const locked = document.querySelector('.zip-card.disabled') !== null;
+                    renderZipLinks(locked);
+                    renderAdminPanel();
+                    saveData();
+                    
+                    showAdminMessage(`✅ ZIP ${(index+1).toString().padStart(2,'0')} berhasil diupdate! Perubahan PERMANEN dan langsung terlihat.`, 'success');
+                });
+            });
+
+            document.querySelectorAll('.zip-item input').forEach(input => {
+                input.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        const btn = this.closest('.zip-item').querySelector('.btn-save-zip');
+                        if (btn) btn.click();
+                    }
+                });
+            });
+        }
+
+        // ---------- SHOW ADMIN MESSAGE ----------
+        function showAdminMessage(msg, type = 'success') {
+            adminMessage.className = `info-message ${type}`;
+            adminMessage.classList.remove('hidden');
+            adminMessage.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-triangle'}"></i> ${msg}`;
+            setTimeout(() => {
+                adminMessage.classList.add('hidden');
+            }, 4000);
+        }
+
+        // ---------- RENDER 15 LINK ----------
+        function renderZipLinks(locked = true) {
+            zipGrid.innerHTML = '';
+            zipLinks.forEach((link, index) => {
+                const card = document.createElement('div');
+                card.className = 'zip-card' + (locked ? ' disabled' : '');
+                const num = (index + 1).toString().padStart(2, '0');
+                const displayName = zipNames[index] || `ZIP ${num}`;
+                
+                card.innerHTML = `
+                    <i class="fas fa-file-archive"></i>
+                    <div class="zip-name">${displayName}</div>
+                    <a href="${link}" target="_blank" ${locked ? 'class="disabled-link" onclick="return false;"' : ''}>
+                        ${locked ? '🔒 terkunci' : '⬇️ Download'}
+                    </a>
+                `;
+                zipGrid.appendChild(card);
+            });
+        }
+
+        renderZipLinks(true);
+        renderAdminPanel();
+        updateLinkButtons();
+
+        // ---------- UPDATE PROGRESS ----------
+        function updateProgress() {
+            stepFollowLabel.className = 'progress-step';
+            stepLikeLabel.className = 'progress-step';
+            stepNameLabel.className = 'progress-step';
+            line1.className = 'progress-line';
+            line2.className = 'progress-line';
+
+            if (isFollowed) {
+                stepFollowLabel.className = 'progress-step done';
+                line1.className = 'progress-line done';
+            } else {
+                stepFollowLabel.className = 'progress-step active';
+            }
+
+            if (isLiked) {
+                stepLikeLabel.className = 'progress-step done';
+                line2.className = 'progress-line done';
+            } else if (isFollowed && !isLiked) {
+                stepLikeLabel.className = 'progress-step active';
+            }
+
+            if (isFollowed && isLiked) {
+                stepNameLabel.className = 'progress-step active';
+            }
+        }
+
+        // ---------- UNLOCK STEP NAMA ----------
+        function unlockStepName() {
+            stepName.classList.remove('locked');
+            stepName.classList.add('unlocked');
+            nameStatus.textContent = '⏳ belum';
+            nameStatus.className = 'status-badge';
+            nameLockMessage.innerHTML = '<i class="fas fa-check-circle" style="color:#00ffb3;"></i> Follow & Like sudah selesai! Silakan masukkan nama.';
+            nameLockMessage.style.color = '#aaffdd';
+            nameInput.disabled = false;
+            btnName.disabled = false;
+            btnName.style.opacity = '1';
+            btnName.innerHTML = '<i class="fas fa-arrow-right"></i> Aktifkan Link';
+            nameMsg.classList.add('hidden');
+            updateProgress();
+        }
+
+        // ---------- UNLOCK LINKS ZIP ----------
+        function unlockLinks() {
+            const cards = zipGrid.querySelectorAll('.zip-card');
+            cards.forEach((card, idx) => {
+                card.classList.remove('disabled');
+                const a = card.querySelector('a');
+                if (a) {
+                    a.textContent = '⬇️ Download';
+                    a.setAttribute('href', zipLinks[idx] || '#');
+                    a.removeAttribute('class');
+                    a.removeAttribute('onclick');
+                }
+            });
+            zipStatusLabel.innerHTML = '<i class="fas fa-unlock"></i> link aktif';
+            zipStatusLabel.style.borderColor = '#00ffb3';
+            zipStatusLabel.style.color = '#aaffdd';
+        }
+
+        // ---------- UPDATE STATUS FOLLOW/LIKE ----------
+        function updateFollowStatus() {
+            const done = (isFollowed ? 1 : 0) + (isLiked ? 1 : 0);
+            followStatus.textContent = `${done}/2`;
+            followStatus.className = 'status-badge' + (done === 2 ? ' done' : '');
+            
+            if (isFollowed) {
+                btnFollow.classList.add('done');
+                btnFollow.disabled = true;
+                followCheck.textContent = '✅';
+            }
+            if (isLiked) {
+                btnLike.classList.add('done');
+                btnLike.disabled = true;
+                likeCheck.textContent = '✅';
+            }
+
+            updateProgress();
+
+            if (isFollowed && isLiked) {
+                followMsg.className = 'info-message success';
+                followMsg.classList.remove('hidden');
+                followMsg.innerHTML = '<i class="fas fa-check-circle"></i> Follow & Like berhasil! Sekarang masukkan nama.';
+                unlockStepName();
+                stepNameLabel.className = 'progress-step active';
+            }
+        }
+
+        // ---------- CEK DAN MUNCULKAN TOMBOL KONFIRMASI ----------
+        function checkAndShowConfirmButtons() {
+            if (isFollowLinkClicked && !isFollowed) {
+                btnFollow.classList.remove('hidden-btn');
+            }
+            if (isVideoLinkClicked && !isLiked) {
+                btnLike.classList.remove('hidden-btn');
+            }
+        }
+
+        // ---------- EVENT FOLLOW LINK ----------
+        followLinkBtn.addEventListener('click', function() {
+            isFollowLinkClicked = true;
+            btnFollow.classList.remove('hidden-btn');
+            this.classList.add('done');
+            this.innerHTML = '<i class="fa-solid fa-check-circle"></i> Akun sudah dibuka';
+            followMsg.className = 'info-message warning';
+            followMsg.classList.remove('hidden');
+            followMsg.innerHTML = '<i class="fas fa-info-circle"></i> Sudah follow? Klik tombol "Saya Sudah Follow" di bawah.';
+        });
+
+        // ---------- EVENT VIDEO LINK ----------
+        videoLinkBtn.addEventListener('click', function() {
+            isVideoLinkClicked = true;
+            btnLike.classList.remove('hidden-btn');
+            this.classList.add('done');
+            this.innerHTML = '<i class="fa-solid fa-check-circle"></i> Video sudah dibuka';
+            followMsg.className = 'info-message warning';
+            followMsg.classList.remove('hidden');
+            followMsg.innerHTML = '<i class="fas fa-info-circle"></i> Sudah like? Klik tombol "Saya Sudah Like" di bawah.';
+        });
+
+        // ---------- EVENT FOLLOW ----------
+        btnFollow.addEventListener('click', function() {
+            if (isFollowed) return;
+            isFollowed = true;
+            updateFollowStatus();
+            followMsg.className = 'info-message success';
+            followMsg.classList.remove('hidden');
+            followMsg.innerHTML = '<i class="fas fa-check-circle"></i> Follow sudah dikonfirmasi!';
+        });
+
+        // ---------- EVENT LIKE ----------
+        btnLike.addEventListener('click', function() {
+            if (isLiked) return;
+            isLiked = true;
+            updateFollowStatus();
+            followMsg.className = 'info-message success';
+            followMsg.classList.remove('hidden');
+            followMsg.innerHTML = '<i class="fas fa-check-circle"></i> Like sudah dikonfirmasi!';
+        });
+
+        // ---------- ADMIN LOGIN ----------
+        btnAdminLogin.addEventListener('click', function() {
+            const pass = adminPassword.value.trim();
+            if (pass === ADMIN_PASSWORD) {
+                isAdminLoggedIn = true;
+                adminContent.classList.remove('hidden');
+                adminLockedContent.classList.add('hidden');
+                adminLockStatus.innerHTML = '<i class="fas fa-unlock"></i> Terbuka';
+                adminLockStatus.style.color = '#ffd700';
+                btnAdminLogin.classList.add('hidden');
+                btnAdminLogout.classList.remove('hidden');
+                adminPassword.value = '';
+                showAdminMessage('✅ Login berhasil! Semua perubahan bersifat PERMANEN dan langsung terlihat.', 'success');
+            } else {
+                showAdminMessage('Password salah!', 'error');
+            }
+        });
+
+        // ---------- ADMIN LOGOUT ----------
+        btnAdminLogout.addEventListener('click', function() {
+            isAdminLoggedIn = false;
+            adminContent.classList.add('hidden');
+            adminLockedContent.classList.remove('hidden');
+            adminLockStatus.innerHTML = '<i class="fas fa-lock"></i> Terkunci';
+            adminLockStatus.style.color = '#8fcbff';
+            btnAdminLogin.classList.remove('hidden');
+            btnAdminLogout.classList.add('hidden');
+            showAdminMessage('Logout berhasil.', 'success');
+        });
+
+        // ---------- RESET ALL ----------
+        btnResetAll.addEventListener('click', function() {
+            if (confirm('⚠️ Reset semua data ke default? Ini akan menghapus semua perubahan yang sudah Anda buat!')) {
+                zipNames = [...DEFAULT_NAMES];
+                zipLinks = [...DEFAULT_LINKS];
+                const locked = document.querySelector('.zip-card.disabled') !== null;
+                renderZipLinks(locked);
+                renderAdminPanel();
+                saveData();
+                showAdminMessage('✅ Semua data direset ke default!', 'success');
+            }
+        });
+
+        // ---------- SAVE FOLLOW LINK ----------
+        btnSaveFollowLink.addEventListener('click', function() {
+            const newLink = followLinkInput.value.trim();
+            if (newLink === '') {
+                showAdminMessage('Link tidak boleh kosong!', 'error');
+                return;
+            }
+            followLink = newLink;
+            updateLinkButtons();
+            
+            isFollowLinkClicked = false;
+            followLinkBtn.classList.remove('done');
+            followLinkBtn.innerHTML = '<i class="fa-brands fa-tiktok"></i> Buka Akun & Follow';
+            btnFollow.classList.add('hidden-btn');
+            btnFollow.classList.remove('done');
+            btnFollow.disabled = false;
+            followCheck.textContent = '';
+            
+            saveData();
+            showAdminMessage('✅ Link Follow berhasil diupdate! Perubahan PERMANEN dan langsung terlihat.', 'success');
+        });
+
+        // ---------- SAVE VIDEO LINK ----------
+        btnSaveVideoLink.addEventListener('click', function() {
+            const newLink = videoLinkInput.value.trim();
+            if (newLink === '') {
+                showAdminMessage('Link tidak boleh kosong!', 'error');
+                return;
+            }
+            videoLink = newLink;
+            updateLinkButtons();
+            
+            isVideoLinkClicked = false;
+            videoLinkBtn.classList.remove('done');
+            videoLinkBtn.innerHTML = '<i class="fa-solid fa-video"></i> Buka Video & Like';
+            btnLike.classList.add('hidden-btn');
+            btnLike.classList.remove('done');
+            btnLike.disabled = false;
+            likeCheck.textContent = '';
+            
+            saveData();
+            showAdminMessage('✅ Link Video berhasil diupdate! Perubahan PERMANEN dan langsung terlihat.', 'success');
+        });
+
+        // ---------- SUBMIT NAMA ----------
+        btnName.addEventListener('click', function() {
+            if (!isFollowed || !isLiked) {
+                nameMsg.className = 'info-message error';
+                nameMsg.classList.remove('hidden');
+                nameMsg.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Selesaikan Follow & Like dulu!';
+                return;
+            }
+
+            const name = nameInput.value.trim();
+            if (!name) {
+                nameMsg.className = 'info-message error';
+                nameMsg.classList.remove('hidden');
+                nameMsg.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Nama tidak boleh kosong!';
+                return;
+            }
+
+            userName = name;
+            isNameSubmitted = true;
+            nameStatus.textContent = '✅ selesai';
+            nameStatus.className = 'status-badge done';
+            nameMsg.className = 'info-message success';
+            nameMsg.classList.remove('hidden');
+            nameMsg.innerHTML = `<i class="fas fa-check-circle"></i> Halo, <strong>${userName}</strong>! Link ZIP sudah aktif.`;
+            btnName.disabled = true;
+            btnName.style.opacity = '0.6';
+            btnName.innerHTML = '<i class="fas fa-check"></i> Aktif';
+            nameInput.disabled = true;
+            stepNameLabel.className = 'progress-step done';
+
+            unlockLinks();
+        });
+
+        // Enter key
+        nameInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                btnName.click();
+            }
+        });
+
+        // Enter key untuk login admin
+        adminPassword.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                btnAdminLogin.click();
+            }
+        });
+
+        // ---------- SET BACKGROUND ----------
+        container.style.background = 'radial-gradient(circle at 20% 30%, #0f1a3a, #030614)';
+        container.style.backgroundImage = `
+            radial-gradient(circle at 20% 30%, #0f1a3a, #030614),
+            repeating-linear-gradient(45deg, #00e5ff08 0px, #00e5ff08 20px, #00a6ff08 20px, #00a6ff08 40px)
+        `;
+        container.style.backgroundBlendMode = 'overlay';
+
+        console.log('🔵 CYBERZIP by OYEN');
+        console.log('📌 Password Admin: oyen123');
+        console.log('📌 PERMANEN: Semua perubahan admin langsung tersimpan dan tidak bisa kembali kecuali direset');
+        console.log('📌 LIVE: Pengguna langsung melihat perubahan tanpa refresh');
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const bgParam = urlParams.get('bg');
+        if (bgParam) {
+            container.style.backgroundImage = `url('${bgParam}')`;
+            container.style.backgroundSize = 'cover';
+            container.style.backgroundPosition = 'center';
+        }
+
+        // Inisialisasi
+        stepName.classList.add('locked');
+        nameStatus.textContent = '🔒 terkunci';
+        nameStatus.className = 'status-badge';
+        nameLockMessage.innerHTML = '<i class="fas fa-lock"></i> Selesaikan FOLLOW & LIKE dulu untuk membuka form ini!';
+        nameLockMessage.style.color = '#ff6b6b';
+        nameInput.disabled = true;
+        btnName.disabled = true;
+        btnName.style.opacity = '0.5';
+        btnName.innerHTML = '<i class="fas fa-lock"></i> Terkunci';
+        followMsg.classList.add('hidden');
+        btnFollow.classList.add('hidden-btn');
+        btnLike.classList.add('hidden-btn');
+        updateProgress();
+        saveData();
+
+        console.log('✅ Siap! Perubahan admin bersifat PERMANEN dan LANGSUNG terlihat.');
+    })();
+</script>
+</body>
+</html>
