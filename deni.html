@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>CYBER-DOWNLOAD | OYENN</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            min-height:100vh;
+            font-family:Arial,sans-serif;
+            color:#fff;
+            background:#000;
+        }
+        #video-bg {
+            position:fixed;
+            top:50%;
+            left:50%;
+            min-width:100%;
+            min-height:100%;
+            transform:translate(-50%,-50%);
+            object-fit:cover;
+            z-index:-2;
+        }
+        .overlay {
+            position:fixed;
+            top:0;
+            left:0;
+            width:100%;
+            height:100%;
+            background:rgba(0,0,0,0.55);
+            z-index:-1;
+        }
+        .scan {
+            position:fixed;
+            top:0;
+            left:0;
+            width:100%;
+            height:100%;
+            background:linear-gradient(to bottom,transparent 50%,rgba(0,212,255,0.02) 50%);
+            background-size:100% 4px;
+            pointer-events:none;
+            z-index:999;
+        }
+        .page {
+            min-height:100vh;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            padding:20px;
+            position:relative;
+            z-index:1;
+        }
+        .sembunyi { display:none !important; }
+        .box {
+            width:100%;
+            max-width:450px;
+            padding:30px;
+            text-align:center;
+            background:rgba(0,0,0,0.4);
+            border-radius:20px;
+            border:1px solid rgba(0,212,255,0.2);
+        }
+        h1 {
+            font-size:26px;
+            margin-bottom:10px;
+            color:#00d4ff;
+            text-shadow:0 0 10px #00d4ff;
+        }
+        .sub {
+            color:#00d4ff;
+            font-size:17px;
+            font-weight:bold;
+            margin-bottom:25px;
+        }
+        .info {
+            color:#eee;
+            margin-bottom:30px;
+        }
+        input {
+            width:100%;
+            padding:15px;
+            margin-bottom:20px;
+            border:2px solid #00d4ff;
+            border-radius:10px;
+            background:transparent;
+            color:#fff;
+        }
+        input::placeholder { color:#aaa; }
+        .tombol {
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            gap:10px;
+            width:100%;
+            padding:15px;
+            margin-bottom:12px;
+            border-radius:10px;
+            font-size:16px;
+            font-weight:bold;
+            text-decoration:none;
+            cursor:pointer;
+            border:none;
+        }
+        .biru {
+            background:transparent;
+            border:2px solid #00d4ff;
+            color:#00d4ff;
+        }
+        .mati {
+            background:transparent;
+            border:2px solid #444;
+            color:#777;
+            cursor:not-allowed;
+        }
+        .link-item {
+            display:flex;
+            align-items:center;
+            gap:15px;
+            padding:15px;
+            margin-bottom:12px;
+            border:1px solid #00d4ff;
+            border-radius:10px;
+            color:#fff;
+            text-decoration:none;
+            background:rgba(0,0,0,0.3);
+        }
+        .link-item i { color:#00d4ff; }
+        .kecil { color:#aaa; font-size:13px; margin-top:3px; }
+        .pembatas {
+            height:2px;
+            width:100px;
+            background:#00d4ff;
+            margin:20px auto;
+            box-shadow:0 0 10px #00d4ff;
+        }
+        .sound-btn {
+            position:fixed;
+            bottom:20px;
+            right:20px;
+            width:45px;
+            height:45px;
+            border-radius:50%;
+            background:rgba(0,0,0,0.5);
+            border:1px solid #00d4ff;
+            color:#00d4ff;
+            font-size:18px;
+            cursor:pointer;
+            z-index:1000;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+        }
+    </style>
+</head>
+<body>
+
+    <video id="video-bg" loop playsinline>
+        <source src="video2.mp4" type="video/mp4">
+    </video>
+    <div class="overlay"></div>
+    <div class="scan"></div>
+
+    <button class="sound-btn" id="tombolSuara">
+        <i class="fa fa-volume-up"></i>
+    </button>
+
+    <!-- HALAMAN UTAMA - LINK FOLLOW & LIKE SUDAH DIPERBAIKI -->
+    <div id="h1" class="page">
+        <div class="box">
+            <h1>website-OYEN</h1>
+            <p class="sub">SELAMAT DATANG</p>
+            <p class="info">🔒 AKSES TERKUNCI! BUKA DENGAN CARA:</p>
+
+            <!-- ✅ TOMBOL FOLLOW (KE PROFIL) -->
+            <a href="https://www.tiktok.com/@meong_13d?_r=1&_t=ZS-98TDSwbq2jt" 
+               target="_blank" 
+               rel="noopener noreferrer"
+               id="btnF" 
+               class="tombol biru">
+                <i class="fa fa-tiktok"></i>  FOLLOW AKUN
+            </a>
+
+            <!-- ✅ TOMBOL LIKE (KE VIDEO) -->
+            <a href="https://vt.tiktok.com/ZS42GQQBE/" 
+               target="_blank" 
+               rel="noopener noreferrer"
+               id="btnL" 
+               class="tombol biru">
+                <i class="fa fa-heart"></i>  LIKE VIDEO
+            </a>
+
+            <button id="btnN" disabled class="tombol mati">
+                ✅ LANJUTKAN
+            </button>
+        </div>
+    </div>
+
+    <div id="h2" class="page sembunyi">
+        <div class="box">
+            <h1>IDENTITAS PENGGUNA</h1>
+            <p class="info">Masukkan nama kamu</p>
+            <input type="text" id="namaIn" placeholder="Ketik nama...">
+            <button id="btnK" class="tombol biru">✔ KONFIRMASI</button>
+        </div>
+    </div>
+
+    <div id="h3" class="page sembunyi">
+        <div class="box">
+            <h1>KUMPULAN APK FAKE LAG</h1>
+            <p id="sapa" class="sub">✓ Selamat Datang</p>
+            <div class="pembatas"></div>
+
+            <div>
+                <a href="https://play.google.com/store/apps/details?id=com.realsignal.gameping" class="link-item">
+                    <i class="fa fa-android fa-2x"></i>
+                    <div><p>FAKE LAG GAMEPING</p><p class="kecil"></p></div>
+                    <i class="fa fa-arrow-circle-right"></i>
+                </a>
+                <a href="https://www.mediafire.com/file/fk3fv4g06gdbr79/NETYSV6.apk/file" class="link-item">
+                    <i class="fa fa-android fa-2x"></i>
+                    <div><p>FAKE LAG NETYSv6</p><p class="kecil"></p></div>
+                    <i class="fa fa-arrow-circle-right"></i>
+                </a>
+                <a href="https://www.mediafire.com/file/n85vtxp0w0xwx76/NetLow_v22.4.4.apk/file" class="link-item">
+                    <i class="fa fa-android fa-2x"></i>
+                    <div><p>FAKE LAG NETLOWv22.4.4</p><p class="kecil"></p></div>
+                    <i class="fa fa-arrow-circle-right"></i>
+                </a>
+                <a href="LINK_FILE_4" class="link-item">
+                    <i class="fa fa-android fa-2x"></i>
+                    <div><p>APK PRO 04</p><p class="kecil"></p></div>
+                    <i class="fa fa-arrow-circle-right"></i>
+                </a>
+                <a href="LINK_FILE_5" class="link-item">
+                    <i class="fa fa-android fa-2x"></i>
+                    <div><p>FILE ZIP 05</p><p class="kecil"></p></div>
+                    <i class="fa fa-arrow-circle-right"></i>
+                </a>
+                <a href="LINK_FILE_6" class="link-item">
+                    <i class="fa fa-android fa-2x"></i>
+                    <div><p>APK PRO 06</p><p class="kecil"></p></div>
+                    <i class="fa fa-arrow-circle-right"></i>
+                </a>
+                <a href="LINK_FILE_7" class="link-item">
+                    <i class="fa fa-android fa-2x"></i>
+                    <div><p>FILE ZIP 07</p><p class="kecil"></p></div>
+                    <i class="fa fa-arrow-circle-right"></i>
+                </a>
+                <a href="LINK_FILE_8" class="link-item">
+                    <i class="fa fa-android fa-2x"></i>
+                    <div><p>APK PRO 08</p><p class="kecil"></p></div>
+                    <i class="fa fa-arrow-circle-right"></i>
+                </a>
+                <a href="LINK_FILE_9" class="link-item">
+                    <i class="fa fa-android fa-2x"></i>
+                    <div><p>FILE ZIP 09</p><p class="kecil"></p></div>
+                    <i class="fa fa-arrow-circle-right"></i>
+                </a>
+                <a href="LINK_FILE_10" class="link-item">
+                    <i class="fa fa-android fa-2x"></i>
+                    <div><p>APK PRO 10</p><p class="kecil"></p></div>
+                    <i class="fa fa-arrow-circle-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let f = false;
+        let l = false;
+        const video = document.getElementById('video-bg');
+        const soundBtn = document.getElementById('tombolSuara');
+        let soundOn = false;
+
+        document.addEventListener('click', function initMedia() {
+            video.play().catch(e => console.log(e));
+            soundOn = true;
+            video.muted = false;
+            soundBtn.innerHTML = '<i class="fa fa-volume-up"></i>';
+            document.removeEventListener('click', initMedia);
+        }, { once: true });
+
+        soundBtn.addEventListener('click', e => {
+            e.stopPropagation();
+            soundOn = !soundOn;
+            video.muted = !soundOn;
+            soundBtn.innerHTML = soundOn ? '<i class="fa fa-volume-up"></i>' : '<i class="fa fa-volume-off"></i>';
+        });
+
+        const h1 = document.getElementById('h1');
+        const h2 = document.getElementById('h2');
+        const h3 = document.getElementById('h3');
+        const btnF = document.getElementById('btnF');
+        const btnL = document.getElementById('btnL');
+        const btnN = document.getElementById('btnN');
+        const namaIn = document.getElementById('namaIn');
+        const btnK = document.getElementById('btnK');
+        const sapa = document.getElementById('sapa');
+
+        btnF.addEventListener('click', () => {
+            f = true;
+            btnF.style.background = 'rgba(0,212,255,0.15)';
+            btnF.innerHTML = '<i class="fa fa-check"></i> ✓ SUDAH FOLLOW';
+            cek();
+        });
+
+        btnL.addEventListener('click', () => {
+            l = true;
+            btnL.style.background = 'rgba(0,212,255,0.15)';
+            btnL.innerHTML = '<i class="fa fa-heart"></i> ✓ SUDAH LIKE';
+            cek();
+        });
+
+        function cek() {
+            if (f && l) {
+                btnN.disabled = false;
+                btnN.classList.remove('mati');
+                btnN.classList.add('biru');
+            }
+        }
+
+        btnN.addEventListener('click', () => {
+            h1.classList.add('sembunyi');
+            h2.classList.remove('sembunyi');
+        });
+
+        btnK.addEventListener('click', () => {
+            const nama = namaIn.value.trim();
+            if (!nama) { alert('⚠️ Isi nama dulu!'); return; }
+            sapa.textContent = `✓ Selamat datang, ${nama}!`;
+            h2.classList.add('sembunyi');
+            h3.classList.remove('sembunyi');
+        });
+    </script>
+
+</body>
+</html>
+
