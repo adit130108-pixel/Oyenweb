@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>DPMods Admin Ultimate</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* === GLOBAL VARIABLES === */
+        :root {
+            --bg-color: #050505;
+            --glass: rgba(20, 20, 20, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --primary: #8e44ad;
+            --text: #ffffff;
+            --text-muted: #999;
+            
+            /* FIXED STATUS COLORS */
+            --c-expired: #ff4d4d;   /* Red */
+            --c-warning: #ffbb33;   /* Yellow */
+            --c-valid: #00c851;     /* Green */
+            --c-lifetime: #f5f6fa;  /* Pearl White */
+            --c-duration: #33b5e5;  /* Sky Blue */
+
+            --radius: 16px;
+            --font: 'Poppins', sans-serif;
+            --blur: blur(16px);
+        }
+
+        /* === THEME ENGINE === */
+        [data-theme="default"] { --bg-color: #090509; --primary: #8e44ad; --bg-pattern: radial-gradient(circle at top right, rgba(142, 68, 173, 0.15), transparent 40%); }
+        [data-theme="matrix"] { --bg-color: #000; --primary: #00ff41; --glass: rgba(0, 20, 0, 0.9); --glass-border: rgba(0, 255, 65, 0.3); }
+        [data-theme="cherry"] { --bg-color: #1a050a; --primary: #ff7eb9; --glass: rgba(40, 10, 20, 0.8); --glass-border: rgba(255, 126, 185, 0.3); }
+        [data-theme="ocean"] { --bg-color: #00101a; --primary: #00d2ff; --glass: rgba(5, 30, 45, 0.85); --glass-border: rgba(0, 210, 255, 0.3); }
+        [data-theme="blood"] { --bg-color: #150000; --primary: #ff3333; --glass: rgba(40, 0, 0, 0.85); --glass-border: rgba(255, 0, 0, 0.4); }
+        [data-theme="gold"] { --bg-color: #12100b; --primary: #ffd700; --glass: rgba(40, 35, 10, 0.85); --glass-border: rgba(255, 215, 0, 0.3); }
+        [data-theme="galaxy"] { --bg-color: #0f0c29; --primary: #bd93f9; --glass: rgba(30, 20, 60, 0.8); --glass-border: rgba(189, 147, 249, 0.3); }
+        [data-theme="cyber"] { --bg-color: #050510; --primary: #00f3ff; --glass: rgba(5, 10, 30, 0.9); --glass-border: rgba(0, 243, 255, 0.4); --text-muted: #88ccff; }
+        [data-theme="arctic"] { --bg-color: #05101a; --primary: #00f2ff; --glass: rgba(10, 25, 35, 0.8); --glass-border: rgba(0, 242, 255, 0.3); }
+        [data-theme="inferno"] { --bg-color: #1a0500; --primary: #ff5500; --glass: rgba(40, 10, 0, 0.85); --glass-border: rgba(255, 85, 0, 0.3); }
+        [data-theme="toxic"] { --bg-color: #051005; --primary: #ccff00; --glass: rgba(10, 20, 5, 0.9); --glass-border: rgba(204, 255, 0, 0.3); }
+        [data-theme="money"] { --bg-color: #051a05; --primary: #00e676; --glass: rgba(5, 30, 5, 0.85); --glass-border: rgba(0, 230, 118, 0.3); }
+        [data-theme="love"] { --bg-color: #1a050a; --primary: #ff0040; --glass: rgba(40, 5, 10, 0.8); --glass-border: rgba(255, 0, 64, 0.3); }
+        [data-theme="sunset"] { --bg-color: #2d142c; --primary: #ee4540; --glass: rgba(50, 20, 40, 0.8); --bg-pattern: linear-gradient(45deg, #2d142c, #510a32, #801336, #c72c41, #ee4540); }
+        [data-theme="glitch"] { --bg-color: #000; --primary: #ff00ff; --glass: rgba(10, 10, 10, 0.95); --glass-border: rgba(255, 255, 255, 0.2); }
+
+        body {
+            background-color: var(--bg-color);
+            background-image: var(--bg-pattern);
+            color: var(--text); font-family: var(--font); margin: 0; padding-bottom: 100px;
+            transition: background 0.5s, color 0.3s; 
+            -webkit-tap-highlight-color: transparent;
+            overflow-x: hidden;
+        }
+
+        /* === ANIMATED BACKGROUNDS === */
+        #matrixCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; display: none; }
+        [data-theme="matrix"] #matrixCanvas { display: block; }
+
+        .cyber-grid { 
+            position: fixed; bottom: -50%; left: -50%; width: 200%; height: 100%; 
+            background-image: linear-gradient(rgba(0, 243, 255, 0.2) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 243, 255, 0.2) 1px, transparent 1px);
+            background-size: 50px 50px; transform: perspective(500px) rotateX(60deg);
+            animation: gridMove 5s linear infinite; z-index: -1; display: none;
+        }
+        [data-theme="cyber"] .cyber-grid { display: block; }
+        @keyframes gridMove { 0% { transform: perspective(500px) rotateX(60deg) translateY(0); } 100% { transform: perspective(500px) rotateX(60deg) translateY(50px); } }
+
+        .ocean-bg { display: none; position: fixed; bottom:0; left:0; width:100%; height:30%; z-index:-1; opacity: 0.3; }
+        [data-theme="ocean"] .ocean-bg { display: block; }
+        .wave { position: absolute; bottom:0; width: 200%; height: 100%; background: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/85486/wave.svg') repeat-x; animation: wave 7s cubic-bezier( 0.36, 0.45, 0.63, 0.53) infinite; }
+        @keyframes wave { 100% { margin-left: -1600px; } }
+
+        .glitch-bg { display: none; position: fixed; top:0; left:0; width:100%; height:100%; z-index:-1; background: repeating-linear-gradient(0deg, transparent, transparent 2px, #111 2px, #111 4px); opacity: 0.2; pointer-events: none;}
+        [data-theme="glitch"] .glitch-bg { display: block; }
+
+        /* === PARTICLE SYSTEM === */
+        .particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; display: none; overflow: hidden; pointer-events: none; }
+        [data-theme="cherry"] .particles, [data-theme="blood"] .particles, [data-theme="gold"] .particles, [data-theme="galaxy"] .particles,
+        [data-theme="arctic"] .particles, [data-theme="inferno"] .particles, [data-theme="toxic"] .particles, [data-theme="money"] .particles, [data-theme="love"] .particles { display: block; }
+        
+        .particle { position: absolute; opacity: 0.6; animation: float 15s infinite linear; }
+        
+        .p-petal { background: #ff7eb9; width: 10px; height: 10px; border-radius: 10px 0; animation-name: falling; }
+        .p-cell { background: radial-gradient(circle, #ff0000, #550000); width: 12px; height: 12px; border-radius: 50%; animation-name: floatUp; opacity: 0.5; }
+        .p-sparkle { background: #ffd700; width: 5px; height: 5px; border-radius: 50%; box-shadow: 0 0 10px #ffd700; animation-name: twinkle; animation-duration: 4s; }
+        .p-snow { background: white; width: 4px; height: 4px; border-radius: 50%; box-shadow: 0 0 5px white; animation-name: falling; }
+        .p-ember { background: linear-gradient(to top, #ff5500, #ffff00); width: 6px; height: 6px; border-radius: 2px; animation-name: floatUp; opacity: 0.8; }
+        .p-bubble { border: 1px solid #ccff00; width: 15px; height: 15px; border-radius: 50%; animation-name: floatUp; opacity: 0.3; }
+        .p-money::before { content: '💸'; font-size: 18px; }
+        .p-money { animation-name: falling; opacity: 0.8; }
+        .p-heart::before { content: '❤'; font-size: 16px; color: #ff0040; text-shadow: 0 0 5px red; }
+        .p-heart { animation-name: floatUp; }
+
+        @keyframes falling { 0% { transform: translateY(-10vh) rotate(0deg); } 100% { transform: translateY(110vh) rotate(360deg); } }
+        @keyframes floatUp { 0% { transform: translateY(110vh) scale(1); } 100% { transform: translateY(-10vh) scale(1.2); } }
+        @keyframes twinkle { 0%, 100% { opacity: 0.2; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1.2); } }
+
+        /* === UI COMPONENTS === */
+        header { position: sticky; top: 0; z-index: 100; background: rgba(0,0,0,0.85); backdrop-filter: var(--blur); padding: 15px 20px; border-bottom: 1px solid var(--glass-border); }
+        .top-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .brand { font-size: 1.3rem; font-weight: 600; display: flex; align-items: center; gap: 10px; }
+        .brand i { color: var(--primary); filter: drop-shadow(0 0 10px var(--primary)); }
+        
+        .action-btn { width: 40px; height: 40px; border-radius: 12px; background: var(--glass); border: 1px solid var(--glass-border); color: var(--text); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s; }
+        .action-btn:active { transform: scale(0.95); }
+
+        .search-container { display: flex; gap: 10px; height: 45px; }
+        .search-box { flex: 1; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); border-radius: 12px; display: flex; align-items: center; padding: 0 15px; transition: 0.3s; }
+        .search-box:focus-within { border-color: var(--primary); box-shadow: 0 0 10px rgba(142, 68, 173, 0.2); }
+        .search-box input { background: none; border: none; color: white; flex: 1; outline: none; font-family: var(--font); margin-left: 10px; }
+        
+        .custom-sort { width: 130px; position: relative; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.85rem; color: var(--text-muted); gap: 8px; }
+        .sort-menu { position: absolute; top: 50px; right: 0; width: 100%; background: #151515; border: 1px solid var(--glass-border); border-radius: 12px; overflow: hidden; display: none; z-index: 200; box-shadow: 0 10px 30px rgba(0,0,0,0.8); }
+        .sort-item { padding: 12px; text-align: center; transition: 0.2s; }
+        .sort-item:hover, .sort-item.active { background: var(--primary); color: white; }
+
+        .tab-content { display: none; padding: 20px; max-width: 800px; margin: 0 auto; animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+        .tab-content.active { display: block; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .glass-card { background: var(--glass); backdrop-filter: blur(10px); border: 1px solid var(--glass-border); border-radius: var(--radius); padding: 20px; margin-bottom: 15px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); transition: transform 0.2s; }
+        .card-title { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; color: var(--primary); font-weight: 700; border-bottom: 1px solid var(--glass-border); padding-bottom: 10px; margin-bottom: 15px; }
+
+        /* === KEY CARDS (Fixed Spacing & Icons) === */
+        .key-card { background: var(--glass); border: 1px solid var(--glass-border); border-radius: 14px; padding: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; transition: 0.3s; position: relative; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity:0; transform: translateY(5px); } to { opacity:1; transform: translateY(0); } }
+        .key-card:active { transform: scale(0.98); background: rgba(255,255,255,0.05); }
+        
+        .key-info h4 { margin: 0 0 5px 0; font-weight: 500; font-family: 'JetBrains Mono', monospace; font-size: 0.95rem; display: flex; align-items: center; gap: 8px; }
+        .tags { display: flex; gap: 6px; flex-wrap: wrap; }
+        .tag { font-size: 0.7rem; padding: 3px 8px; border-radius: 6px; background: rgba(255,255,255,0.08); border: 1px solid var(--glass-border); color: var(--text-muted); }
+
+        /* ACTION ICONS (INCREASED GAP) */
+        .key-actions { display: flex; align-items: center; gap: 25px; padding-right: 5px; }
+        .key-actions i { margin: 0; cursor: pointer; color: var(--text-muted); transition: 0.2s; font-size: 1rem; }
+        .key-actions i:hover { color: var(--primary); transform: scale(1.3); }
+
+        .status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+        .dot-expired { background: var(--c-expired); box-shadow: 0 0 8px var(--c-expired); animation: pulse 1.5s infinite; }
+        .dot-warning { background: var(--c-warning); box-shadow: 0 0 6px var(--c-warning); }
+        .dot-valid   { background: var(--c-valid); box-shadow: 0 0 6px var(--c-valid); }
+        .dot-lifetime{ background: var(--c-lifetime) !important; box-shadow: 0 0 10px rgba(255,255,255,0.6) !important; } 
+        .dot-duration{ background: var(--c-duration) !important; box-shadow: 0 0 6px var(--c-duration) !important; }
+        @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
+
+        .input-group { margin-bottom: 15px; }
+        .input-group label { display: block; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 5px; }
+        .input-box { width: 100%; background: rgba(0,0,0,0.4); border: 1px solid var(--glass-border); padding: 12px; border-radius: 10px; color: white; font-family: 'JetBrains Mono', monospace; box-sizing: border-box; outline: none; font-size: 0.9rem; transition: 0.3s; }
+        .input-box:focus { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(255,255,255,0.1); }
+        .input-wrapper { position: relative; width: 100%; display: flex; align-items: center; }
+        .calendar-icon { position: absolute; right: 15px; color: var(--text-muted); pointer-events: none; }
+        .hidden-date-picker { position: absolute; right: 0; top: 0; width: 50px; height: 100%; opacity: 0; cursor: pointer; }
+
+        .navbar { position: fixed; bottom: 0; width: 100%; height: 70px; background: rgba(5,5,5,0.95); backdrop-filter: blur(12px); border-top: 1px solid var(--glass-border); display: flex; justify-content: space-around; align-items: center; z-index: 900; }
+        .nav-item { text-align: center; color: var(--text-muted); font-size: 0.7rem; transition: 0.2s; cursor: pointer; }
+        .nav-item i { font-size: 1.4rem; display: block; margin-bottom: 4px; transition: 0.3s; }
+        .nav-item.active { color: var(--primary); transform: translateY(-2px); }
+        .nav-item.active i { filter: drop-shadow(0 0 5px var(--primary)); }
+
+        .fab-stack { position: fixed; bottom: 90px; right: 20px; display: flex; flex-direction: column; gap: 12px; z-index: 950; }
+        .fab { width: 55px; height: 55px; border-radius: 18px; display: flex; justify-content: center; align-items: center; font-size: 1.4rem; color: white; box-shadow: 0 5px 15px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); cursor: pointer; background: none; outline: none; padding: 0; backdrop-filter: blur(5px); transition: 0.3s; }
+        .fab:hover { transform: scale(1.05); box-shadow: 0 8px 20px rgba(0,0,0,0.6); }
+        .fab-add { background: var(--primary); }
+        .fab-magic { background: linear-gradient(135deg, #a55eea, #33b5e5); }
+
+        .modal-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); display: none; justify-content: center; align-items: center; z-index: 2000; animation: fadeIn 0.2s ease; }
+        .modal-content { background: #121212; width: 90%; max-width: 400px; padding: 25px; border-radius: 22px; border: 1px solid var(--glass-border); box-shadow: 0 20px 50px rgba(0,0,0,0.6); max-height: 85vh; overflow-y: auto; transform: scale(0.95); animation: scaleUp 0.3s ease forwards; }
+        @keyframes scaleUp { to { transform: scale(1); } }
+
+        .toggle-row { display: flex; background: rgba(255,255,255,0.05); padding: 4px; border-radius: 10px; margin-bottom: 15px; }
+        .toggle-btn { flex: 1; text-align: center; padding: 8px; font-size: 0.8rem; border-radius: 8px; color: #888; cursor: pointer; transition: 0.3s; }
+        .toggle-btn.active { background: var(--primary); color: white; font-weight: 600; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+
+        .btn-row { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
+        .btn { padding: 12px 24px; border-radius: 10px; border: none; font-weight: 600; cursor: pointer; transition: 0.3s; }
+        .btn:active { transform: scale(0.96); }
+        .btn-save { background: var(--primary); color: white; }
+        .btn-save:hover { box-shadow: 0 0 15px var(--primary); }
+        .btn-cancel { background: #222; color: white; }
+
+        #themeMenu { position: absolute; top: 70px; right: 20px; width: 160px; max-height: 300px; overflow-y: auto; background: #1a1a1a; border: 1px solid var(--glass-border); border-radius: 14px; display: none; flex-direction: column; z-index: 1100; animation: fadeIn 0.2s; }
+        .t-item { padding: 12px; display: flex; align-items: center; gap: 10px; font-size: 0.9rem; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .t-item:hover { background: rgba(255,255,255,0.05); }
+        .t-dot { width: 12px; height: 12px; border-radius: 50%; }
+
+        .guide-section { margin-bottom: 25px; border-bottom: 1px solid var(--glass-border); padding-bottom: 15px; }
+        .guide-title { font-size: 0.95rem; font-weight: 600; color: var(--primary); display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+        .guide-row { display: flex; align-items: center; margin-bottom: 10px; font-size: 0.85rem; color: var(--text-muted); background: rgba(255,255,255,0.02); padding: 8px; border-radius: 8px; }
+        .guide-row strong { color: white; margin-left: 8px; margin-right: 5px; }
+        .guide-icon { width: 24px; text-align: center; color: var(--primary); }
+
+        #loader { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.9); z-index: 3000; display: none; justify-content: center; align-items: center; }
+    </style>
+</head>
+<body data-theme="default">
+
+    <canvas id="matrixCanvas"></canvas>
+    <div class="particles" id="particleContainer"></div>
+    <div class="cyber-grid"></div>
+    <div class="ocean-bg"><div class="wave"></div></div>
+    <div class="glitch-bg"></div>
+
+    <datalist id="time-presets">
+        <option value="1h"><option value="12h"><option value="1d"><option value="3d"><option value="1w"><option value="1M"><option value="lifetime">
+    </datalist>
+
+    <header>
+        <div class="top-row">
+            <div class="brand"><i class="fas fa-shield-halved"></i> DPMods Ultimate</div>
+            <div style="display:flex; gap:10px;">
+                <div class="action-btn" onclick="toggleThemeMenu()"><i class="fas fa-palette"></i></div>
+                <div class="action-btn" onclick="loadData()"><i class="fas fa-sync-alt"></i></div>
+            </div>
+        </div>
+
+        <div id="themeMenu">
+            <div class="t-item" onclick="setTheme('default')"><div class="t-dot" style="background:#8e44ad"></div> Default</div>
+            <div class="t-item" onclick="setTheme('matrix')"><div class="t-dot" style="background:#00ff41"></div> Matrix</div>
+            <div class="t-item" onclick="setTheme('cyber')"><div class="t-dot" style="background:#00f3ff"></div> Cyber</div>
+            <div class="t-item" onclick="setTheme('galaxy')"><div class="t-dot" style="background:#bd93f9"></div> Galaxy</div>
+            <div class="t-item" onclick="setTheme('arctic')"><div class="t-dot" style="background:#00f2ff"></div> Arctic</div>
+            <div class="t-item" onclick="setTheme('inferno')"><div class="t-dot" style="background:#ff5500"></div> Inferno</div>
+            <div class="t-item" onclick="setTheme('cherry')"><div class="t-dot" style="background:#ff7eb9"></div> Cherry</div>
+            <div class="t-item" onclick="setTheme('ocean')"><div class="t-dot" style="background:#00d2ff"></div> Ocean</div>
+            <div class="t-item" onclick="setTheme('blood')"><div class="t-dot" style="background:#ff3333"></div> Blood</div>
+            <div class="t-item" onclick="setTheme('toxic')"><div class="t-dot" style="background:#ccff00"></div> Toxic</div>
+            <div class="t-item" onclick="setTheme('gold')"><div class="t-dot" style="background:#ffd700"></div> Gold</div>
+            <div class="t-item" onclick="setTheme('money')"><div class="t-dot" style="background:#00e676"></div> Money</div>
+            <div class="t-item" onclick="setTheme('love')"><div class="t-dot" style="background:#ff0040"></div> Love</div>
+            <div class="t-item" onclick="setTheme('sunset')"><div class="t-dot" style="background:#ee4540"></div> Sunset</div>
+            <div class="t-item" onclick="setTheme('glitch')"><div class="t-dot" style="background:#ff00ff"></div> Glitch</div>
+        </div>
+
+        <div class="search-container">
+            <div class="search-box">
+                <i class="fas fa-search" style="color:var(--text-muted)"></i>
+                <input type="text" id="searchInput" placeholder="Search keys..." oninput="renderKeys()">
+            </div>
+            <div class="custom-sort" onclick="toggleSort()">
+                <i class="fas fa-filter"></i> <span id="sortLabel">Default</span>
+                <div class="sort-menu" id="sortMenu">
+                    <div class="sort-item active" onclick="setSort('default', 'Default (Smart)')">Default (Smart)</div>
+                    <div class="sort-item" onclick="setSort('time_asc', 'Shortest Time (1h...)')">Shortest Time (1h...)</div>
+                    <div class="sort-item" onclick="setSort('time_desc', 'Longest Time (Life...)')">Longest Time (Life...)</div>
+                    <div class="sort-item" onclick="setSort('az', 'Name A-Z')">Name A-Z</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div id="tab-keys" class="tab-content active">
+        <div id="keysList" style="padding-bottom: 80px;"></div>
+    </div>
+
+    <div id="tab-config" class="tab-content">
+        <div class="glass-card">
+            <div class="card-title">App Configuration</div>
+            <div class="input-group"><label>Theme Color</label><input type="color" id="cfg_themeColor" class="input-box" style="height:45px;"></div>
+            <div class="input-group"><label>Country</label><input type="text" id="cfg_country" class="input-box" placeholder="e.g. Global"></div>
+            <div class="input-group"><label>Text Color</label><input type="color" id="cfg_textColor" class="input-box" style="height:45px;"></div>
+            <div class="input-group"><label>Force Update?</label>
+                <select id="cfg_updateAvailable" class="input-box"><option value="true">True</option><option value="false">False</option></select>
+            </div>
+            <div class="btn-row"><button class="btn btn-save" onclick="saveAllData()">Save Config</button></div>
+        </div>
+    </div>
+
+    <div id="tab-dialogs" class="tab-content">
+        <div class="glass-card">
+            <div class="card-title">Login Dialog</div>
+            <div class="input-group"><label>Title</label><input type="text" id="login_title" class="input-box"></div>
+            <div class="input-group"><label>Subtitle</label><input type="text" id="login_subtitle" class="input-box"></div>
+            <div style="display:flex; gap:10px;">
+                <div class="input-group" style="flex:1"><label>Login Btn</label><input type="text" id="login_btnText" class="input-box"></div>
+                <div class="input-group" style="flex:1"><label>Admin Btn</label><input type="text" id="login_adminBtnText" class="input-box"></div>
+            </div>
+            <div class="input-group"><label>Admin URL</label><input type="text" id="login_adminUrl" class="input-box"></div>
+        </div>
+        <div class="glass-card">
+            <div class="card-title">Update Dialog</div>
+            <div class="input-group"><label>Title</label><input type="text" id="upd_title" class="input-box"></div>
+            <div class="input-group"><label>Subtitle</label><input type="text" id="upd_subtitle" class="input-box"></div>
+            <div style="display:flex; gap:10px;">
+                <div class="input-group" style="flex:1"><label>Upd Btn</label><input type="text" id="upd_btnText" class="input-box"></div>
+                <div class="input-group" style="flex:1"><label>Help Btn</label><input type="text" id="upd_adminBtnText" class="input-box"></div>
+            </div>
+            <div class="input-group"><label>APK URL</label><input type="text" id="upd_downloadUrl" class="input-box"></div>
+            <div class="input-group"><label>Help URL</label><input type="text" id="upd_adminUrl" class="input-box"></div>
+            <div class="input-group"><label>Show Help?</label>
+                <select id="upd_showAdmin" class="input-box"><option value="true">Yes</option><option value="false">No</option></select>
+            </div>
+            <div class="btn-row"><button class="btn btn-save" onclick="saveAllData()">Save Dialogs</button></div>
+        </div>
+    </div>
+
+    <div id="tab-guide" class="tab-content">
+        <div class="glass-card">
+            <div class="card-title"><i class="fas fa-book-open"></i> Admin Documentation</div>
+            
+            <div class="guide-section">
+                <div class="guide-title"><i class="fas fa-traffic-light"></i> Status Indicators</div>
+                <div class="guide-row"><span class="status-dot dot-valid"></span> <strong>Valid:</strong> Active key with time remaining.</div>
+                <div class="guide-row"><span class="status-dot dot-warning"></span> <strong>Warning:</strong> Expires in less than 3 days.</div>
+                <div class="guide-row"><span class="status-dot dot-expired"></span> <strong>Expired:</strong> Date has passed.</div>
+                <div class="guide-row"><span class="status-dot dot-lifetime"></span> <strong>Lifetime:</strong> Pearl White (Camouflaged).</div>
+                <div class="guide-row"><span class="status-dot dot-duration"></span> <strong>Duration:</strong> Blue (1h, 1d) - timer not started.</div>
+            </div>
+
+            <div class="guide-section">
+                <div class="guide-title"><i class="fas fa-key"></i> Key Management</div>
+                <div class="guide-row"><div class="guide-icon"><i class="fas fa-bolt"></i></div> <strong>Simple Key:</strong> Just has an expiry date/duration. Best for standard users.</div>
+                <div class="guide-row"><div class="guide-icon"><i class="fas fa-shield-alt"></i></div> <strong>Advanced Key:</strong> Includes interval checks & custom toast messages. Best for VIPs.</div>
+                <div class="guide-row"><div class="guide-icon"><i class="fas fa-magic"></i></div> <strong>Magic Wand:</strong> Bulk generator. Generate 1-10 keys instantly with a prefix.</div>
+            </div>
+        </div>
+    </div>
+
+    <nav class="navbar">
+        <div class="nav-item active" onclick="switchTab('keys', this)"><i class="fas fa-key"></i> Keys</div>
+        <div class="nav-item" onclick="switchTab('config', this)"><i class="fas fa-sliders-h"></i> Config</div>
+        <div class="nav-item" onclick="switchTab('dialogs', this)"><i class="fas fa-comment-dots"></i> Dialogs</div>
+        <div class="nav-item" onclick="switchTab('guide', this)"><i class="fas fa-book"></i> Guide</div>
+    </nav>
+
+    <div class="fab-stack">
+        <button class="fab fab-magic" onclick="document.getElementById('magicModal').style.display='flex'"><i class="fas fa-magic"></i></button>
+        <button class="fab fab-add" onclick="openKeyModal()"><i class="fas fa-plus"></i></button>
+    </div>
+
+    <div id="keyModal" class="modal-bg">
+        <div class="modal-content">
+            <div class="card-title">Manage Key</div>
+            <div class="input-group"><label>Key Name</label><input type="text" id="modal_keyName" class="input-box"></div>
+            
+            <div class="toggle-row">
+                <div class="toggle-btn active" id="modeSimple" onclick="setKeyMode('simple')">Simple</div>
+                <div class="toggle-btn" id="modeAdvanced" onclick="setKeyMode('advanced')">Advanced</div>
+            </div>
+
+            <div class="input-group">
+                <label>Expiry (Date or Duration)</label>
+                <div class="input-wrapper">
+                    <input type="text" id="modal_expiry" class="input-box" list="time-presets" style="padding-right: 45px;" placeholder="YYYY-MM-DD or 1h, lifetime">
+                    <i class="fas fa-calendar-alt calendar-icon"></i>
+                    <input type="date" class="hidden-date-picker" onchange="syncDate(this, 'modal_expiry')">
+                </div>
+            </div>
+
+            <div id="advFields" style="display:none">
+                <div class="input-group"><label>Interval Check</label><input type="text" id="modal_interval" class="input-box" placeholder="everytime"></div>
+                <div class="input-group"><label>Toast Message</label><input type="text" id="modal_toast" class="input-box"></div>
+            </div>
+
+            <div class="btn-row">
+                <button class="btn btn-cancel" onclick="document.getElementById('keyModal').style.display='none'">Cancel</button>
+                <button class="btn btn-save" onclick="saveKey()">Save Key</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="magicModal" class="modal-bg">
+        <div class="modal-content">
+            <div class="card-title">Generator</div>
+            <div class="toggle-row">
+                <div class="toggle-btn active" id="genModeSimple" onclick="setGenMode('simple')">Simple</div>
+                <div class="toggle-btn" id="genModeAdvanced" onclick="setGenMode('advanced')">Advanced</div>
+            </div>
+            <div class="input-group"><label>Prefix</label><input type="text" id="gen_prefix" class="input-box" placeholder="VIP"></div>
+            <div class="input-group"><label>Amount</label><select id="gen_amount" class="input-box"><option value="1">1</option><option value="5">5</option><option value="10">10</option></select></div>
+            <div class="input-group">
+                <label>Expiry</label>
+                <div class="input-wrapper">
+                    <input type="text" id="gen_expiry" class="input-box" list="time-presets" value="1d">
+                    <i class="fas fa-calendar-alt calendar-icon"></i>
+                    <input type="date" class="hidden-date-picker" onchange="syncDate(this, 'gen_expiry')">
+                </div>
+            </div>
+            <div id="gen_advFields" style="display:none">
+                <div class="input-group"><label>Interval</label><input type="text" id="gen_interval" class="input-box" placeholder="everytime"></div>
+                <div class="input-group"><label>Toast</label><input type="text" id="gen_toast" class="input-box"></div>
+            </div>
+            <div class="btn-row">
+                <button class="btn btn-cancel" onclick="document.getElementById('magicModal').style.display='none'">Close</button>
+                <button class="btn btn-save" onclick="generate()">Generate</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="loader"><i class="fas fa-spinner fa-spin fa-3x" style="color:var(--primary)"></i></div>
+
+    <script>
+        const PROJECT = "DPModsYT/premiumanimeadmin";
+        const TOKEN = "m0DS6f5dTPpnrfW86MQp1OmlzOTFuCw.01.121rrn343";
+        const FILE = "Key.json";
+        const BRANCH = "main";
+        const API = `https://gitlab.com/api/v4/projects/${encodeURIComponent(PROJECT)}/repository/files/${encodeURIComponent(FILE)}`;
+
+        let globalData = { keys: {} };
+        let editingKey = null;
+        let keyMode = 'simple';
+        let genMode = 'simple';
+        let currentSort = 'default';
+
+        // --- ANIMATION ---
+        const canvas = document.getElementById('matrixCanvas');
+        const ctx = canvas.getContext('2d');
+        let matrixInterval;
+
+        function startMatrix() {
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+            const chars = '0123456789ABCDEF'.split('');
+            const fontSize = 16;
+            const columns = canvas.width/fontSize;
+            const drops = Array(Math.floor(columns)).fill(1);
+            if(matrixInterval) clearInterval(matrixInterval);
+            matrixInterval = setInterval(() => {
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.05)'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = '#0F0'; ctx.font = fontSize + 'px monospace';
+                for(let i=0; i<drops.length; i++) {
+                    ctx.fillText(chars[Math.floor(Math.random()*chars.length)], i*fontSize, drops[i]*fontSize);
+                    if(drops[i]*fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+                    drops[i]++;
+                }
+            }, 50);
+        }
+        function stopMatrix() { if(matrixInterval) clearInterval(matrixInterval); ctx.clearRect(0,0,canvas.width,canvas.height); }
+
+        function createParticles(count, className) {
+            const container = document.getElementById('particleContainer'); container.innerHTML = '';
+            for(let i=0; i<count; i++) {
+                const d = document.createElement('div'); d.className = 'particle ' + className;
+                d.style.left = Math.random()*100 + 'vw'; d.style.top = Math.random()*100 + 'vh';
+                d.style.animationDuration = (Math.random()*5 + 3) + 's'; d.style.animationDelay = -(Math.random()*10) + 's';
+                container.appendChild(d);
+            }
+        }
+
+        function setTheme(t) {
+            document.body.setAttribute('data-theme', t); document.getElementById('themeMenu').style.display = 'none';
+            stopMatrix(); const pc = document.getElementById('particleContainer'); pc.innerHTML = '';
+            if(t === 'matrix') startMatrix();
+            const configs = {'cherry':{c:20,cls:'p-petal'}, 'blood':{c:15,cls:'p-cell'}, 'gold':{c:30,cls:'p-sparkle'}, 'galaxy':{c:40,cls:'p-sparkle'}, 'arctic':{c:30,cls:'p-snow'}, 'inferno':{c:20,cls:'p-ember'}, 'toxic':{c:15,cls:'p-bubble'}, 'money':{c:10,cls:'p-money'}, 'love':{c:15,cls:'p-heart'}};
+            if(configs[t]) createParticles(configs[t].c, configs[t].cls);
+        }
+
+        // --- SORTING HELPERS ---
+        function getDurationMS(str) {
+            if(!str) return 0;
+            str = str.toString().toLowerCase();
+            if(str.includes('life')) return 9999999999999; // Huge number
+            const match = str.match(/^(\d+)([hdwmy])$/);
+            if(!match) return 0; // Date or invalid
+            const num = parseInt(match[1]);
+            const unit = match[2];
+            const multipliers = { 'h': 3600000, 'd': 86400000, 'w': 604800000, 'm': 2592000000, 'y': 31536000000 };
+            return num * (multipliers[unit] || 0);
+        }
+
+        function getSortValue(k) {
+            const v = globalData.keys[k];
+            const exp = typeof v === 'object' ? v.expiry : v;
+            if(!exp) return { type: 'invalid', val: 0 };
+            
+            const e = exp.toLowerCase();
+            if(e.includes('life')) return { type: 'life', val: Infinity };
+            if(e.match(/^[0-9]+[hdwmy]$/)) return { type: 'duration', val: getDurationMS(e) };
+            
+            const d = new Date(exp);
+            if(!isNaN(d)) {
+                const diff = d - new Date();
+                if(diff < 0) return { type: 'expired', val: diff };
+                if(diff < 259200000) return { type: 'warning', val: diff };
+                return { type: 'valid', val: diff };
+            }
+            return { type: 'invalid', val: 0 };
+        }
+
+        function renderKeys() {
+            const list = document.getElementById('keysList'); list.innerHTML = '';
+            let keys = Object.keys(globalData.keys);
+            const s = document.getElementById('searchInput').value.toLowerCase();
+            keys = keys.filter(k => k.toLowerCase().includes(s));
+
+            // COMPLEX SORT
+            keys.sort((a, b) => {
+                const sa = getSortValue(a);
+                const sb = getSortValue(b);
+
+                if (currentSort === 'az') return a.localeCompare(b);
+                
+                if (currentSort === 'time_asc' || currentSort === 'time_desc') {
+                    // Prioritize duration comparisons logic
+                    let valA = sa.type === 'life' ? 9e15 : (sa.type === 'duration' ? sa.val : 0);
+                    let valB = sb.type === 'life' ? 9e15 : (sb.type === 'duration' ? sb.val : 0);
+                    return currentSort === 'time_asc' ? valA - valB : valB - valA;
+                }
+
+                // DEFAULT SMART SORT
+                // Order: Expired -> Warning -> Valid -> Duration -> Life
+                const rank = { 'expired': 0, 'warning': 1, 'valid': 2, 'duration': 3, 'life': 4, 'invalid': 5 };
+                if (rank[sa.type] !== rank[sb.type]) return rank[sa.type] - rank[sb.type];
+                
+                // Sub-sort
+                if (sa.type === 'expired') return sa.val - sb.val; // Oldest expired first? or newest? (diff is negative)
+                if (sa.type === 'valid' || sa.type === 'warning') return sa.val - sb.val; // Soonest expiry first
+                if (sa.type === 'duration') return sa.val - sb.val; // Shortest duration first
+                return 0;
+            });
+
+            if(keys.length === 0) list.innerHTML = '<div style="text-align:center; color:#888; margin-top:20px;">No keys found</div>';
+
+            keys.forEach(k => {
+                const v = globalData.keys[k];
+                const isObj = typeof v === 'object';
+                const exp = isObj ? v.expiry : v;
+                
+                // Determine Dot Color
+                let dot = 'dot-duration';
+                const sv = getSortValue(k);
+                if(sv.type === 'expired') dot = 'dot-expired';
+                else if(sv.type === 'warning') dot = 'dot-warning';
+                else if(sv.type === 'valid') dot = 'dot-valid';
+                else if(sv.type === 'life') dot = 'dot-lifetime';
+                else if(sv.type === 'duration') dot = 'dot-duration';
+
+                const icon = isObj ? '<i class="fas fa-shield-alt" title="Advanced"></i>' : '<i class="fas fa-bolt" title="Simple"></i>';
+
+                list.innerHTML += `
+                <div class="key-card">
+                    <div class="key-info">
+                        <h4><span class="status-dot ${dot}"></span>${k} <span style="font-size:0.7rem; margin-left:8px; opacity:0.5">${icon}</span></h4>
+                        <div class="tags">
+                            <span class="tag"><i class="far fa-clock"></i> ${exp}</span>
+                            ${isObj && v.interval ? `<span class="tag"><i class="fas fa-sync"></i> ${v.interval}</span>` : ''}
+                        </div>
+                    </div>
+                    <div class="key-actions">
+                        <i class="fas fa-pen" onclick="openKeyModal('${k}')"></i>
+                        <i class="fas fa-trash" onclick="delKey('${k}')"></i>
+                    </div>
+                </div>`;
+            });
+        }
+
+        // --- API & UI ---
+        async function loadData() {
+            document.getElementById('loader').style.display = 'flex';
+            try {
+                const r = await fetch(`${API}?ref=${BRANCH}`, { headers: { "Private-Token": TOKEN } });
+                if(!r.ok) throw new Error("Fetch Failed");
+                const j = await r.json();
+                globalData = JSON.parse(atob(j.content));
+                
+                if(!globalData.keys) globalData.keys = {};
+                if(!globalData.config) globalData.config = {};
+                if(!globalData.loginDialog) globalData.loginDialog = {};
+                if(!globalData.updateDialog) globalData.updateDialog = {};
+
+                renderAll();
+            } catch(e) { alert("Data Load Error: " + e.message); }
+            finally { document.getElementById('loader').style.display = 'none'; }
+        }
+
+        async function saveAllData() {
+            globalData.config.country = document.getElementById('cfg_country').value;
+            globalData.config.themeColor = document.getElementById('cfg_themeColor').value;
+            globalData.config.textColor = document.getElementById('cfg_textColor').value;
+            globalData.config.updateAvailable = document.getElementById('cfg_updateAvailable').value === 'true';
+            // ... (rest of dialog save logic same as before)
+            globalData.loginDialog.title = document.getElementById('login_title').value;
+            globalData.loginDialog.subtitle = document.getElementById('login_subtitle').value;
+            globalData.loginDialog.loginButtonText = document.getElementById('login_btnText').value;
+            globalData.loginDialog.adminButtonText = document.getElementById('login_adminBtnText').value;
+            globalData.loginDialog.adminUrl = document.getElementById('login_adminUrl').value;
+            globalData.updateDialog.title = document.getElementById('upd_title').value;
+            globalData.updateDialog.subtitle = document.getElementById('upd_subtitle').value;
+            globalData.updateDialog.downloadButtonText = document.getElementById('upd_btnText').value;
+            globalData.updateDialog.downloadUrl = document.getElementById('upd_downloadUrl').value;
+            globalData.updateDialog.adminButtonText = document.getElementById('upd_adminBtnText').value;
+            globalData.updateDialog.adminUrl = document.getElementById('upd_adminUrl').value;
+            globalData.updateDialog.showAdminButton = document.getElementById('upd_showAdmin').value === 'true';
+
+            document.getElementById('loader').style.display = 'flex';
+            try {
+                const p = { branch: BRANCH, content: btoa(JSON.stringify(globalData, null, 2)), commit_message: "Update", encoding: "base64" };
+                await fetch(API, { method: 'PUT', headers: { "Private-Token": TOKEN, "Content-Type": "application/json" }, body: JSON.stringify(p) });
+                alert("Saved!");
+            } catch(e) { alert(e.message); }
+            finally { document.getElementById('loader').style.display = 'none'; }
+        }
+
+        function renderAll() {
+            renderKeys();
+            const c = globalData.config || {};
+            document.getElementById('cfg_country').value = c.country || '';
+            document.getElementById('cfg_themeColor').value = c.themeColor || '#8e44ad';
+            document.getElementById('cfg_textColor').value = c.textColor || '#ffffff';
+            document.getElementById('cfg_updateAvailable').value = c.updateAvailable ? 'true' : 'false';
+            
+            const l = globalData.loginDialog || {};
+            document.getElementById('login_title').value = l.title || '';
+            document.getElementById('login_subtitle').value = l.subtitle || '';
+            document.getElementById('login_btnText').value = l.loginButtonText || '';
+            document.getElementById('login_adminBtnText').value = l.adminButtonText || '';
+            document.getElementById('login_adminUrl').value = l.adminUrl || '';
+
+            const u = globalData.updateDialog || {};
+            document.getElementById('upd_title').value = u.title || '';
+            document.getElementById('upd_subtitle').value = u.subtitle || '';
+            document.getElementById('upd_btnText').value = u.downloadButtonText || '';
+            document.getElementById('upd_downloadUrl').value = u.downloadUrl || '';
+            document.getElementById('upd_adminBtnText').value = u.adminButtonText || '';
+            document.getElementById('upd_adminUrl').value = u.adminUrl || '';
+            document.getElementById('upd_showAdmin').value = u.showAdminButton ? 'true' : 'false';
+        }
+
+        function toggleThemeMenu() { const m = document.getElementById('themeMenu'); m.style.display = m.style.display === 'flex' ? 'none' : 'flex'; }
+        function toggleSort() { document.getElementById('sortMenu').style.display = document.getElementById('sortMenu').style.display==='block'?'none':'block'; }
+        function setSort(v, l) { currentSort = v; document.getElementById('sortLabel').textContent = l; toggleSort(); renderKeys(); }
+        function setKeyMode(m) { keyMode = m; document.getElementById('modeSimple').className=`toggle-btn ${m==='simple'?'active':''}`; document.getElementById('modeAdvanced').className=`toggle-btn ${m==='advanced'?'active':''}`; document.getElementById('advFields').style.display=m==='advanced'?'block':'none'; }
+        function setGenMode(m) { genMode = m; document.getElementById('genModeSimple').className=`toggle-btn ${m==='simple'?'active':''}`; document.getElementById('genModeAdvanced').className=`toggle-btn ${m==='advanced'?'active':''}`; document.getElementById('gen_advFields').style.display=m==='advanced'?'block':'none'; }
+        function syncDate(p, id) { if(p.value) { document.getElementById(id).value = p.value; p.value=''; } }
+
+        function openKeyModal(k=null) {
+            editingKey = k; document.getElementById('keyModal').style.display = 'flex';
+            if(k) {
+                const v = globalData.keys[k]; document.getElementById('modal_keyName').value = k;
+                if(typeof v === 'object') { setKeyMode('advanced'); document.getElementById('modal_expiry').value = v.expiry; document.getElementById('modal_interval').value = v.interval; document.getElementById('modal_toast').value = v.toast || ''; }
+                else { setKeyMode('simple'); document.getElementById('modal_expiry').value = v; }
+            } else { document.getElementById('modal_keyName').value = ''; document.getElementById('modal_expiry').value = ''; setKeyMode('simple'); }
+        }
+        
+        function saveKey() {
+            const name = document.getElementById('modal_keyName').value.trim();
+            if(!name) return;
+            const exp = document.getElementById('modal_expiry').value || 'lifetime';
+            let val = keyMode==='simple' ? exp : { expiry: exp, interval: document.getElementById('modal_interval').value, toast: document.getElementById('modal_toast').value };
+            if(editingKey && editingKey!==name) delete globalData.keys[editingKey];
+            globalData.keys[name] = val;
+            document.getElementById('keyModal').style.display = 'none'; renderKeys(); saveAllData();
+        }
+
+        function generate() {
+            const p = document.getElementById('gen_prefix').value.toUpperCase();
+            const amt = parseInt(document.getElementById('gen_amount').value);
+            const exp = document.getElementById('gen_expiry').value || 'lifetime';
+            let val = genMode==='simple' ? exp : { expiry: exp, interval: document.getElementById('gen_interval').value, toast: document.getElementById('gen_toast').value };
+            for(let i=0; i<amt; i++) {
+                const k = p ? `${p}-${Math.random().toString(36).substring(2,6).toUpperCase()}` : `KEY-${Math.random().toString(36).substring(2,6).toUpperCase()}`;
+                globalData.keys[k] = (typeof val === 'object') ? {...val} : val;
+            }
+            document.getElementById('magicModal').style.display = 'none'; renderKeys(); saveAllData();
+        }
+
+        function delKey(k) { if(confirm('Delete?')) { delete globalData.keys[k]; renderKeys(); saveAllData(); } }
+        function switchTab(id, el) { document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active')); document.getElementById('tab-'+id).classList.add('active'); document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active')); el.classList.add('active'); }
+
+        loadData();
+    </script>
+</body>
+</html>
