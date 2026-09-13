@@ -22,8 +22,8 @@
     "adminUrl": "https://t.me/your_channel"
   },
   "keys": {
-    "VIP-USER": {
-      "expiry": "2025-12-31",
+    "JONXITER": {
+      "expiry": "5d",
       "interval": "1week",
       "toast": "Welcome back, VIP Legend! 👑"
     },
