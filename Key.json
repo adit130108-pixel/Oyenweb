@@ -1,0 +1,143 @@
+{
+  "config": {
+    "country": "India",
+    "updateAvailable": false,
+    "themeColor": "#8e44ad",
+    "textColor": "#ffffff"
+  },
+  "loginDialog": {
+    "title": "Welcome To DPMods",
+    "subtitle": "If you don't have a key, contact Admin. Otherwise, enter your key and press Login.",
+    "loginButtonText": "Login",
+    "adminButtonText": "Get Key",
+    "adminUrl": "https://t.me/your_channel"
+  },
+  "updateDialog": {
+    "title": "Critical Update!",
+    "subtitle": "A mandatory update is available. You cannot continue without updating.",
+    "downloadButtonText": "Update Now",
+    "downloadUrl": "https://example.com/app.apk",
+    "showAdminButton": true,
+    "adminButtonText": "Help",
+    "adminUrl": "https://t.me/your_channel"
+  },
+  "keys": {
+    "VIP-USER": {
+      "expiry": "2025-12-31",
+      "interval": "1week",
+      "toast": "Welcome back, VIP Legend! 👑"
+    },
+    "TRIAL-KEY": {
+      "expiry": "3d",
+      "interval": "everytime",
+      "toast": "3-Day Trial Started ⏳"
+    },
+    "1-HOUR-TEST": {
+      "expiry": "1h",
+      "interval": "everytime",
+      "toast": "1 Hour Test Active 🕐"
+    },
+    "12-HOUR-PASS": {
+      "expiry": "12h",
+      "interval": "1h",
+      "toast": "12 Hour Session Started ⚡"
+    },
+    "MONTHLY-SUB": {
+      "expiry": "1m",
+      "interval": "1d",
+      "toast": "Monthly Access Granted ✅"
+    },
+    "YEARLY-PRO": {
+      "expiry": "1y",
+      "interval": "1week",
+      "toast": "Yearly Pro Subscription 🌟"
+    },
+    "LIFETIME-KEY": {
+      "expiry": "lifetime",
+      "interval": "30d",
+      "toast": "Lifetime Access 💎"
+    },
+    "STREAMER-VIP": {
+      "expiry": "lifetime",
+      "interval": "1d",
+      "toast": "Welcome Streamer! 🎥"
+    },
+    "SIMPLE-KEY": "2025-01-01",
+    "dpmods123": {
+      "expiry": "1h",
+      "interval": "1h",
+      "toast": ""
+    },
+    "DPMODS-L0QS": {
+      "expiry": "1d",
+      "interval": "everytime",
+      "toast": "Bulk Key"
+    },
+    "DPMODS-SXI0": {
+      "expiry": "1d",
+      "interval": "everytime",
+      "toast": "Bulk Key"
+    },
+    "DPMODS-YO7N": {
+      "expiry": "1d",
+      "interval": "everytime",
+      "toast": "Bulk Key"
+    },
+    "DPMODS-ON3G": {
+      "expiry": "1d",
+      "interval": "everytime",
+      "toast": "Bulk Key"
+    },
+    "DPMODS-D6JD": {
+      "expiry": "1d",
+      "interval": "everytime",
+      "toast": "Bulk Key"
+    },
+    "KEY-K1ML": {
+      "expiry": "1d",
+      "interval": "everytime",
+      "toast": "Welcome!"
+    },
+    "SUMIT-JMQW": {
+      "expiry": "1d",
+      "interval": "everytime",
+      "toast": "Welcome!"
+    },
+    "I LOVE MY GF-WYKS": {
+      "expiry": "1d",
+      "interval": "everytime",
+      "toast": "Welcome!"
+    },
+    "I LOVE MY GF-VPTO": {
+      "expiry": "1d",
+      "interval": "everytime",
+      "toast": "Welcome!"
+    },
+    "I LOVE MY GF-NZQL": {
+      "expiry": "1d",
+      "interval": "everytime",
+      "toast": "Welcome!"
+    },
+    "I LOVE MY GF-0YV4": {
+      "expiry": "1d",
+      "interval": "everytime",
+      "toast": "Welcome!"
+    },
+    "I LOVE MY GF-6A4U": {
+      "expiry": "1d",
+      "interval": "everytime",
+      "toast": "Welcome!"
+    },
+    "DPMOODFvdv": "everytime",
+    "dpadmin": {
+      "expiry": "2025-11-20",
+      "interval": "everytime",
+      "toast": "Subscribe DPMods"
+    },
+    "dpadmin123": {
+      "expiry": "1h",
+      "interval": "everytime",
+      "toast": "Trial key "
+    }
+  }
+}
