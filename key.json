@@ -12,7 +12,7 @@
     "destination_trick": "https://translate.google.com/?sl=auto&tl=en&op=translate&text="
   },
   "ui_text": {
-    "dialog_title": "JonXIT Mods",
+    "dialog_title": "JonXITMods",
     "dialog_subtitle": "Device Verification Required",
     "btn_get_key": "Get Key",
     "btn_login": "Login / Verify",
@@ -30,7 +30,7 @@
     "timezone": "Asia/Kolkata"
   },
   "update_system": {
-    "force_update_date": "01/1/2026",
+    "force_update_date": "01/10/2026",
     "update_url": "https://t.me/DPMods",
     "update_title": "Update Required",
     "update_msg": "A new version is available. Please update."
