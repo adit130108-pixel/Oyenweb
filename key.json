@@ -3,7 +3,7 @@
     "admin_url": "https://t.me/DPMods",
     "info_url": "https://youtube.com/dpmods",
     "info_msg": "How To Get Key",
-    "key_validity": "24h"
+    "key_validity": "5d"
   },
   "shortener": {
     "base_url": "https://xtglinks.com/api",
