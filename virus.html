@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚠️ SYSTEM BREACH</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; }
+        html, body { width: 100%; height: 100%; overflow: hidden; background: #000; cursor: none; }
+        #screen {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: radial-gradient(circle at center, #3a0000 0%, #000 70%);
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            z-index: 9999;
+            animation: flicker 0.15s infinite, shake 0.3s infinite;
+        }
+        @keyframes flicker { 0% { opacity: 1; } 25% { opacity: 0.85; } 50% { opacity: 1; } 75% { opacity: 0.9; } 100% { opacity: 1; } }
+        @keyframes shake {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(-2px, 1px) rotate(-0.4deg); }
+            50% { transform: translate(2px, -1px) rotate(0.4deg); }
+            75% { transform: translate(-1px, 2px) rotate(-0.2deg); }
+            100% { transform: translate(0, 0) rotate(0deg); }
+        }
+        .warning {
+            font-family: 'Courier New', monospace; color: #ff0033; font-size: 16vw; font-weight: 900;
+            text-shadow: 0 0 20px #ff0033, 0 0 40px #ff0033, 0 0 80px #ff0033;
+            animation: pulse 0.4s infinite alternate; letter-spacing: 4px;
+        }
+        @keyframes pulse { from { transform: scale(1); text-shadow: 0 0 20px #ff0033, 0 0 40px #ff0033; } to { transform: scale(1.08); text-shadow: 0 0 40px #ff0033, 0 0 80px #ff0033, 0 0 120px #ff0033; } }
+        .subtitle {
+            font-family: 'Courier New', monospace; color: #fff; font-size: 4vw; font-weight: bold;
+            margin-top: 20px; text-align: center; padding: 0 20px; text-shadow: 0 0 15px #ff0033;
+            animation: blink 0.6s infinite; letter-spacing: 2px;
+        }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
+        .code {
+            font-family: 'Courier New', monospace; color: #00ff41; font-size: 3.5vw;
+            margin-top: 40px; text-align: center; text-shadow: 0 0 10px #00ff41;
+            animation: glitch 0.3s infinite; padding: 0 20px;
+        }
+        @keyframes glitch {
+            0% { transform: translate(0); } 20% { transform: translate(-3px, 2px); }
+            40% { transform: translate(3px, -2px); } 60% { transform: translate(-2px, -1px); }
+            80% { transform: translate(2px, 1px); } 100% { transform: translate(0); }
+        }
+        .bar {
+            width: 80vw; height: 8px; border: 2px solid #ff0033; margin-top: 30px;
+            position: relative; overflow: hidden; box-shadow: 0 0 20px #ff0033;
+        }
+        .bar::after {
+            content: ''; position: absolute; top: 0; left: 0; width: 30%; height: 100%;
+            background: linear-gradient(90deg, transparent, #ff0033, transparent);
+            animation: scan 1.5s linear infinite;
+        }
+        @keyframes scan { 0% { left: -30%; } 100% { left: 100%; } }
+    </style>
+</head>
+<body>
+
+<div id="screen">
+    <div class="warning">⚠ ERROR</div>
+    <div class="subtitle">SYSTEM HAS BEEN BREACHED</div>
+    <div class="code" id="code">INITIALIZING...</div>
+    <div class="bar"></div>
+</div>
+
+<!-- Audio silent untuk unlock autoplay -->
+<audio id="silentAudio" loop>
+    <source src="data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA" type="audio/wav">
+</audio>
+
+<script>
+    // ==========================================
+    // PRANK HTML - FULLSCREEN + SUARA + GETER
+    // VERSI AUTOPLAY MAKSIMAL
+    // ==========================================
+
+    // ─── 1. FULLSCREEN ───
+    function goFullscreen() {
+        const el = document.documentElement;
+        if (el.requestFullscreen) el.requestFullscreen();
+        else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+        else if (el.mozRequestFullScreen) el.mozRequestFullScreen();
+        else if (el.msRequestFullscreen) el.msRequestFullscreen();
+    }
+
+    // ─── 2. SUARA ANEH (Web Audio API) ───
+    let audioCtx = null;
+    let soundInterval = null;
+
+    function startWeirdSound() {
+        try {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+            // Fungsi bikin nada aneh
+            function playNote(freq, duration, type) {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = type || 'sawtooth';
+                osc.frequency.value = freq;
+                gain.gain.value = 0.15;
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + duration);
+
+                const lfo = audioCtx.createOscillator();
+                const lfoGain = audioCtx.createGain();
+                lfo.frequency.value = 8;
+                lfoGain.gain.value = 50;
+                lfo.connect(lfoGain);
+                lfoGain.connect(osc.frequency);
+                lfo.start();
+                lfo.stop(audioCtx.currentTime + duration);
+            }
+
+            let step = 0;
+            const notes = [120, 90, 200, 150, 80, 250, 110, 180];
+            soundInterval = setInterval(() => {
+                const f = notes[step % notes.length];
+                playNote(f, 0.4, step % 3 === 0 ? 'square' : 'sawtooth');
+                step++;
+            }, 350);
+
+        } catch (e) {
+            console.log('Audio error:', e);
+        }
+    }
+
+    // ─── 3. GETER TERUS ───
+    function startVibration() {
+        if ('vibrate' in navigator) {
+            const pattern = [400, 100, 400, 100, 600, 200, 300, 100];
+            navigator.vibrate(pattern);
+            setInterval(() => navigator.vibrate(pattern), 2200);
+        }
+    }
+
+    // ─── 4. TEKS CODE MUTER ───
+    const texts = [
+        '> ACCESSING FILES...', '> DOWNLOADING DATA...', '> BYPASSING SECURITY...',
+        '> ENCRYPTING SYSTEM...', '> UPLOADING TO SERVER...', '> CRITICAL ERROR 0x00FF',
+        '> SYSTEM FAILURE', '> DEVICE COMPROMISED'
+    ];
+    let textIdx = 0;
+    setInterval(() => {
+        document.getElementById('code').textContent = texts[textIdx % texts.length];
+        textIdx++;
+    }, 900);
+
+    // ─── 5. JALANKAN SEMUA ───
+    window.addEventListener('load', () => {
+        goFullscreen();
+
+        // Trik unlock autoplay: mainkan audio silent dulu
+        const silentAudio = document.getElementById('silentAudio');
+        silentAudio.volume = 0.01;
+        silentAudio.play().then(() => {
+            // Setelah silent audio jalan, coba mainkan suara aneh
+            startWeirdSound();
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }).catch(() => {
+            // Kalo gagal, tetep coba start sound
+            startWeirdSound();
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        });
+
+        startVibration();
+
+        // Fallback: kalo masih belum ada suara, coba resume pas ada interaksi
+        document.body.addEventListener('touchstart', function once() {
+            if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+            silentAudio.play();
+            startVibration();
+            document.body.removeEventListener('touchstart', once);
+        }, { once: true });
+
+        document.body.addEventListener('click', function once() {
+            if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+            silentAudio.play();
+            startVibration();
+            document.body.removeEventListener('click', once);
+        }, { once: true });
+    });
+
+    // ─── 6. MATIIN GETER KALO DITUTUP ───
+    window.addEventListener('beforeunload', () => {
+        if ('vibrate' in navigator) navigator.vibrate(0);
+        if (soundInterval) clearInterval(soundInterval);
+        if (audioCtx) audioCtx.close();
+    });
+
+    // ─── 7. CEGAH SCROLL & ZOOM ───
+    document.addEventListener('gesturestart', e => e.preventDefault());
+    document.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
+</script>
+
+</body>
+</html>
