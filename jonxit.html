@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CHEAT FF FREE FIRE 🇮🇩</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --neon: #b026ff;
+    --neon-2: #ff2bd6;
+    --neon-soft: #d78bff;
+    --dark: #07000f;
+    --panel: rgba(18, 0, 32, 0.78);
+    --text: #f3e8ff;
+    --muted: #b99ad6;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body { height: 100%; }
+
+  body {
+    font-family: 'Rajdhani', sans-serif;
+    background: var(--dark);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Video background (taruh file background.mp4 di folder yang sama) */
+  #bgVideo {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -3;
+    filter: saturate(1.1) brightness(0.55);
+  }
+
+  /* Overlay ungu + gradient supaya teks tetap terbaca */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(circle at 20% 20%, rgba(176, 38, 255, 0.35), transparent 45%),
+      radial-gradient(circle at 80% 80%, rgba(255, 43, 214, 0.25), transparent 45%),
+      linear-gradient(180deg, rgba(7, 0, 15, 0.55), rgba(7, 0, 15, 0.9));
+    z-index: -2;
+  }
+
+  /* Efek scanline cyberpunk */
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.18) 0px,
+      rgba(0, 0, 0, 0.18) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .wrap {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 40px 18px 60px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  header { text-align: center; margin-bottom: 28px; }
+
+  .title {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 900;
+    font-size: clamp(1.8rem, 6vw, 2.6rem);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #fff;
+    text-shadow:
+      0 0 6px var(--neon),
+      0 0 18px var(--neon),
+      0 0 36px var(--neon-2);
+    position: relative;
+  }
+
+  .title::before,
+  .title::after {
+    content: attr(data-text);
+    position: absolute;
+    left: 0; top: 0; width: 100%;
+    opacity: 0.7;
+  }
+  .title::before {
+    color: var(--neon-2);
+    transform: translate(-2px, 0);
+    clip-path: polygon(0 10%, 100% 10%, 100% 40%, 0 40%);
+    animation: glitch 3s infinite linear alternate-reverse;
+  }
+  .title::after {
+    color: #00e5ff;
+    transform: translate(2px, 0);
+    clip-path: polygon(0 60%, 100% 60%, 100% 80%, 0 80%);
+    animation: glitch 2.4s infinite linear alternate;
+  }
+
+  @keyframes glitch {
+    0%   { transform: translate(-2px, 0); }
+    20%  { transform: translate(3px, 0); }
+    40%  { transform: translate(-1px, 0); }
+    60%  { transform: translate(2px, 0); }
+    100% { transform: translate(-3px, 0); }
+  }
+
+  .subtitle {
+    margin-top: 10px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 4px;
+    color: var(--neon-soft);
+  }
+
+  .panel {
+    background: var(--panel);
+    border: 1px solid var(--neon);
+    box-shadow: 0 0 18px rgba(176, 38, 255, 0.45), inset 0 0 22px rgba(176, 38, 255, 0.12);
+    padding: 22px;
+    clip-path: polygon(
+      14px 0, 100% 0, 100% calc(100% - 14px),
+      calc(100% - 14px) 100%, 0 100%, 0 14px
+    );
+    backdrop-filter: blur(4px);
+  }
+
+  .hint {
+    text-align: center;
+    color: var(--muted);
+    font-size: 1rem;
+    margin-bottom: 18px;
+  }
+
+  /* ===== GATE: langkah follow & join ===== */
+  .step {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px;
+    border: 1px dashed rgba(215, 139, 255, 0.45);
+    margin-bottom: 14px;
+    transition: border-color .3s, box-shadow .3s;
+  }
+  .step.done {
+    border: 1px solid #39ff88;
+    box-shadow: 0 0 14px rgba(57, 255, 136, 0.35);
+  }
+
+  .step-num {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+    font-size: 1.3rem;
+    width: 46px;
+    height: 46px;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--neon-2);
+    color: var(--neon-2);
+    text-shadow: 0 0 8px var(--neon-2);
+    flex-shrink: 0;
+  }
+  .step.done .step-num {
+    border-color: #39ff88;
+    color: #39ff88;
+    text-shadow: 0 0 8px #39ff88;
+  }
+
+  .step-body { flex: 1; min-width: 0; }
+  .step-title { font-weight: 700; font-size: 1.1rem; color: #fff; }
+  .step-desc { color: var(--muted); font-size: .95rem; margin-top: 2px; }
+
+  .step-actions { display: flex; flex-direction: column; gap: 8px; }
+
+  /* ===== TOMBOL ===== */
+  .btn {
+    font-family: 'Orbitron', sans-serif;
+    font-size: .7rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #fff;
+    background: linear-gradient(90deg, var(--neon), var(--neon-2));
+    border: none;
+    padding: 11px 16px;
+    cursor: pointer;
+    clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+    box-shadow: 0 0 12px rgba(176, 38, 255, .6);
+    transition: transform .15s, box-shadow .15s, opacity .2s;
+    white-space: nowrap;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+  }
+  .btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 0 22px rgba(255, 43, 214, .8);
+  }
+  .btn:disabled {
+    opacity: .35;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+  .btn-outline {
+    background: transparent;
+    border: 1px solid var(--neon-soft);
+    color: var(--neon-soft);
+    box-shadow: none;
+  }
+  .btn-full { width: 100%; margin-top: 8px; }
+
+  .status-note {
+    text-align: center;
+    font-size: .9rem;
+    color: var(--muted);
+    margin-top: 8px;
+  }
+
+  /* ===== DAFTAR APK ===== */
+  #downloads { display: none; }
+
+  .apk-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px;
+    border-left: 3px solid var(--neon-2);
+    background: rgba(176, 38, 255, 0.08);
+    margin-bottom: 12px;
+    transition: background .2s, transform .2s;
+  }
+  .apk-item:hover {
+    background: rgba(176, 38, 255, 0.18);
+    transform: translateX(4px);
+  }
+  .apk-name { font-weight: 700; font-size: 1.1rem; color: #fff; }
+  .apk-meta { font-size: .85rem; color: var(--muted); margin-top: 2px; }
+
+  .apk-item .btn { font-size: .62rem; padding: 10px 12px; }
+
+  footer {
+    text-align: center;
+    margin-top: 26px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: .6rem;
+    letter-spacing: 3px;
+    color: var(--neon-soft);
+    opacity: .7;
+  }
+
+  @media (max-width: 480px) {
+    .step { flex-direction: column; align-items: stretch; text-align: center; }
+    .step-num { margin: 0 auto; }
+    .apk-item { flex-direction: column; align-items: stretch; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<video id="bgVideo" autoplay muted loop playsinline>
+  <source src="video1.mp4" type="video/mp4">
+</video>
+
+<div class="wrap">
+  <header>
+    <h1 class="title" data-text="CHEAT FF FREE FIRE 🇮🇩">CHEAT FF FREE FIRE 🇮🇩</h1>
+    <p class="subtitle">// JX ACCESS //</p>
+  </header>
+
+  <!-- ===== TAHAP 1: GATE FOLLOW & JOIN ===== -->
+  <section id="gate" class="panel">
+    <p class="hint">Ikuti langkah di bawah untuk membuka akses download.</p>
+
+    <div class="step" id="tiktokCard">
+      <div class="step-num">01</div>
+      <div class="step-body">
+        <div class="step-title">Follow TikTok</div>
+        <div class="step-desc">Follow akun TikTok kami terlebih dahulu.</div>
+      </div>
+      <div class="step-actions">
+        <button class="btn" onclick="openStep('tiktok')">Buka TikTok</button>
+        <button class="btn btn-outline" id="tiktokConfirm" onclick="confirmStep('tiktok')" disabled>Sudah Follow</button>
+      </div>
+    </div>
+
+    <div class="step" id="channelCard">
+      <div class="step-num">02</div>
+      <div class="step-body">
+        <div class="step-title">Join Saluran</div>
+        <div class="step-desc">Bergabung ke saluran kami untuk update terbaru.</div>
+      </div>
+      <div class="step-actions">
+        <button class="btn" onclick="openStep('channel')">Buka Saluran</button>
+        <button class="btn btn-outline" id="channelConfirm" onclick="confirmStep('channel')" disabled>Sudah Join</button>
+      </div>
+    </div>
+
+    <p class="status-note" id="gateNote">Selesaikan kedua langkah untuk membuka akses.</p>
+  </section>
+
+  <!-- ===== TAHAP 2: DAFTAR APK ===== -->
+  <section id="downloads" class="panel">
+    <p class="hint">Akses terbuka. Pilih file yang ingin di-download.</p>
+    <div id="apkList"></div>
+  </section>
+
+  <footer>© 2026 · JX SYSTEMS ONLINE</footer>
+</div>
+
+<script>
+  /* ==========================================================
+     KONFIGURASI — ganti bagian ini dengan data kamu
+     ========================================================== */
+  const CONFIG = {
+    tiktokUrl: 'https://www.tiktok.com/@jonxit9?_r=1&_t=ZS-9AJU0pbEm7Y',
+    channelUrl: 'https://whatsapp.com/channel/0029VbC258BC1FuKJHGgOS0A',
+    apks: [
+      { nama: 'Nama APK 1', versi: 'v1.0.0', ukuran: '45 MB', url: 'https://LINK_APK_1.apk' },
+      { nama: 'Nama APK 1', versi: 'v1.0.0', ukuran: '45 MB', url: 'https://LINK_APK_1.apk' },
+      { nama: 'Nama APK 2', versi: 'v2.1.3', ukuran: '82 MB', url: 'https://LINK_APK_2.apk' },
+      { nama: 'Nama APK 3', versi: 'v3.0.0', ukuran: '120 MB', url: 'https://LINK_APK_3.apk' }
+    ]
+  };
+
+  const KEY = 'cp_akses_terbuka';
+  const done = { tiktok: false, channel: false };
+
+  function urlFor(id) {
+    return id === 'tiktok' ? CONFIG.tiktokUrl : CONFIG.channelUrl;
+  }
+
+  // Buka link sosmed di tab baru, lalu aktifkan tombol konfirmasi
+  function openStep(id) {
+    window.open(urlFor(id), '_blank', 'noopener');
+    document.getElementById(id + 'Confirm').disabled = false;
+  }
+
+  // User konfirmasi sudah melakukan langkah
+  function confirmStep(id) {
+    done[id] = true;
+    const btn = document.getElementById(id + 'Confirm');
+    btn.textContent = 'Terverifikasi ✓';
+    btn.disabled = true;
+    document.getElementById(id + 'Card').classList.add('done');
+
+    if (done.tiktok && done.channel) {
+      unlock();
+    } else {
+      document.getElementById('gateNote').textContent =
+        'Satu langkah lagi untuk membuka akses.';
+    }
+  }
+
+  function unlock() {
+    try { localStorage.setItem(KEY, '1'); } catch (e) {}
+    showDownloads();
+  }
+
+  function showDownloads() {
+    document.getElementById('gate').style.display = 'none';
+    document.getElementById('downloads').style.display = 'block';
+    renderApks();
+  }
+
+  function renderApks() {
+    const list = document.getElementById('apkList');
+    list.innerHTML = CONFIG.apks.map(function (apk) {
+      return (
+        '<div class="apk-item">' +
+          '<div>' +
+            '<div class="apk-name">' + apk.nama + '</div>' +
+            '<div class="apk-meta">' + apk.versi + ' · ' + apk.ukuran + '</div>' +
+          '</div>' +
+          '<a class="btn" href="' + apk.url + '" target="_blank" rel="noopener">Download</a>' +
+        '</div>'
+      );
+    }).join('');
+  }
+
+  // Kalau sebelumnya sudah terbuka, langsung tampilkan daftar APK
+  (function init() {
+    let sudahTerbuka = false;
+    try { sudahTerbuka = localStorage.getItem(KEY) === '1'; } catch (e) {}
+    if (sudahTerbuka) showDownloads();
+  })();
+</script>
+</body>
+</html>
